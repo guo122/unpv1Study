@@ -43,7 +43,20 @@ HEADERS += \
     ../lib/wrapsock.lc \
     ../lib/write_fd.lc \
     ../lib/writen.lc \
-    ../intro/daytimetcpsrv.lc
+    ../intro/daytimetcpsrv.lc \
+    ../test/readline.h \
+    ../test/readline1.lc \
+    ../test/test.h \
+    ../tcpcliserv/sigchldwait.lc \
+    ../tcpcliserv/sigchldwaitpid.lc \
+    ../tcpcliserv/str_cli11.lc \
+    ../tcpcliserv/str_echo08.lc \
+    ../tcpcliserv/sum.h \
+    ../tcpcliserv/tcpcli01.lc \
+    ../tcpcliserv/tcpserv01.lc \
+    ../tcpcliserv/tcpserv04.lc \
+    ../tcpcliserv/tcpservpoll01.lc \
+    ../tcpcliserv/tcpservselect01.lc
 
 SOURCES += \
     ../lib/connect_nonb.c \
@@ -117,10 +130,50 @@ SOURCES += \
     ../intro/daytimetcpsrv1.c \
     ../intro/daytimetcpsrv2.c \
     ../intro/daytimetcpsrv3.c \
-    ../intro/daytimetcpsrvv6.c
+    ../intro/daytimetcpsrvv6.c \
+    ../test/accept_eintr.c \
+    ../test/funcs.c \
+    ../test/readline1.c \
+    ../test/readline2.c \
+    ../test/readline3.c \
+    ../test/test1.c \
+    ../test/test2.c \
+    ../test/tisfdtype.c \
+    ../test/treadline1.c \
+    ../test/treadline2.c \
+    ../test/treadline3.c \
+    ../test/tshutdown.c \
+    ../test/tsnprintf.c \
+    ../tcpcliserv/sigchldwait.c \
+    ../tcpcliserv/sigchldwaitpid.c \
+    ../tcpcliserv/str_cli08.c \
+    ../tcpcliserv/str_cli09.c \
+    ../tcpcliserv/str_cli11.c \
+    ../tcpcliserv/str_echo08.c \
+    ../tcpcliserv/str_echo09.c \
+    ../tcpcliserv/tcpcli01.c \
+    ../tcpcliserv/tcpcli04.c \
+    ../tcpcliserv/tcpcli05.c \
+    ../tcpcliserv/tcpcli06.c \
+    ../tcpcliserv/tcpcli07.c \
+    ../tcpcliserv/tcpcli08.c \
+    ../tcpcliserv/tcpcli09.c \
+    ../tcpcliserv/tcpcli10.c \
+    ../tcpcliserv/tcpcli11.c \
+    ../tcpcliserv/tcpserv01.c \
+    ../tcpcliserv/tcpserv02.c \
+    ../tcpcliserv/tcpserv03.c \
+    ../tcpcliserv/tcpserv04.c \
+    ../tcpcliserv/tcpserv08.c \
+    ../tcpcliserv/tcpserv09.c \
+    ../tcpcliserv/tcpservpoll01.c \
+    ../tcpcliserv/tcpservselect01.c \
+    ../tcpcliserv/tsigpipe.c
 
 DISTFILES += \
     ../lib/Makefile \
     ../intro/truss.solaris.2.6 \
     ../intro/truss.unixware.2.1 \
-    ../intro/Makefile
+    ../intro/Makefile \
+    ../test/Makefile \
+    ../tcpcliserv/Makefile

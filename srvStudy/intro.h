@@ -10,5 +10,6 @@
 #define headerFunc_h
 
 void daytimetcpsrv();
+void daytimetcpsrv1();
 
 #endif /* headerFunc_h */

@@ -5,6 +5,7 @@
 *.x.c
 bin
 build
+*.pro.user
 
 Source code/Make.defines
 Source code/Makefile
