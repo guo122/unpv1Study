@@ -5,3 +5,9 @@
 *.x.c
 bin
 build
+
+Source code/Make.defines
+Source code/Makefile
+Source code/config.h
+Source code/config.log
+Source code/config.status
