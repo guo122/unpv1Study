@@ -1,27 +1,42 @@
 #include	"unproute.h"
 
-void	pr_rtable(void);
-void	pr_iflist(void);
+void	pr_rtable(int);
+void	pr_iflist(int);
 
 int
 main(int argc, char **argv)
 {
-	pr_rtable();
+	int family;
 
-	pr_iflist();
+	if (argc != 2)
+		err_quit("usage: mynetstat <inet4|inet6|all>");
+	if (strcmp(argv[1], "inet4") == 0)
+		family = AF_INET;
+#ifdef	AF_INET6
+	else if (strcmp(argv[1], "inet6") == 0)
+		family = AF_INET6;
+#endif
+	else if (strcmp(argv[1], "all") == 0)
+		family = 0;
+	else
+		err_quit("invalid <address-family>");
+
+	pr_rtable(family);
+
+	pr_iflist(family);
 
 	exit(0);
 }
 
 void
-pr_rtable(void)
+pr_rtable(int family)
 {
 	char				*buf, *next, *lim;
 	size_t				len;
 	struct rt_msghdr	*rtm;
 	struct sockaddr		*sa, *rti_info[RTAX_MAX];
 
-	buf = Net_rt_dump(AF_INET, 0, &len);
+	buf = Net_rt_dump(family, 0, &len);
 
 	lim = buf + len;
 	for (next = buf; next < lim; next += rtm->rtm_msglen) {
@@ -39,7 +54,7 @@ pr_rtable(void)
 }
 
 void
-pr_iflist(void)
+pr_iflist(int family)
 {
 	int 				flags;
 	char				*buf, *next, *lim;
@@ -50,7 +65,7 @@ pr_iflist(void)
 	struct sockaddr		*sa, *rti_info[RTAX_MAX];
 	struct sockaddr_dl	*sdl;
 
-	buf = Net_rt_iflist(0, 0, &len);
+	buf = Net_rt_iflist(family, 0, &len);
 
 	lim = buf + len;
 	for (next = buf; next < lim; next += ifm->ifm_msglen) {

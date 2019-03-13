@@ -1,11 +1,11 @@
 /* include rtt1 */
 #include	"unprtt.h"
 
-int		rtt_d_flag = 0;		/* debug flag; can be set nonzero by caller */
+int		rtt_d_flag = 0;		/* debug flag; can be set by caller */
 
 /*
  * Calculate the RTO value based on current estimators:
- *		smoothed RTT plus four times the deviation.
+ *		smoothed RTT plus four times the deviation
  */
 #define	RTT_RTOCALC(ptr) ((ptr)->rtt_srtt + (4.0 * (ptr)->rtt_rttvar))
 
@@ -25,7 +25,7 @@ rtt_init(struct rtt_info *ptr)
 	struct timeval	tv;
 
 	Gettimeofday(&tv, NULL);
-	ptr->rtt_base = tv.tv_sec;		/* #sec since 1/1/1970 at start */
+	ptr->rtt_base = tv.tv_sec;		/* # sec since 1/1/1970 at start */
 
 	ptr->rtt_rtt    = 0;
 	ptr->rtt_srtt   = 0;

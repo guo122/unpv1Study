@@ -1,6 +1,6 @@
 include ../Make.defines
 
-PROGS =	sendrecv udpcli05 udpcli06
+PROGS =	sendrecv udpcli05 udpcli06 udpserv01
 
 all:	${PROGS}
 
@@ -18,6 +18,9 @@ udpcli05:	udpcli05.o dgclimcast5.o
 # Try to bind multicast address and send.
 udpcli06:	udpcli06.o dgclimcast6.o
 		${CC} ${CFLAGS} -o $@ udpcli06.o dgclimcast6.o ${LIBS}
+
+udpserv01:	udpserv01.o
+		${CC} ${CFLAGS} -o $@ udpserv01.o ${LIBS}
 
 clean:
 		rm -f ${PROGS} ${CLEANFILES}

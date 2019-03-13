@@ -12,7 +12,7 @@ connect_nonb(int sockfd, const SA *saptr, socklen_t salen, int nsec)
 	Fcntl(sockfd, F_SETFL, flags | O_NONBLOCK);
 
 	error = 0;
-	if ( (n = connect(sockfd, (struct sockaddr *) saptr, salen)) < 0)
+	if ( (n = connect(sockfd, saptr, salen)) < 0)
 		if (errno != EINPROGRESS)
 			return(-1);
 

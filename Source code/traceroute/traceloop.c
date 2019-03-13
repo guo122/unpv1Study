@@ -9,12 +9,23 @@ traceloop(void)
 	struct timeval		tvrecv;
 
 	recvfd = Socket(pr->sasend->sa_family, SOCK_RAW, pr->icmpproto);
-	setuid(getuid());		/* don't need special permissions any more */
+	setuid(getuid());		/* don't need special permissions anymore */
+
+#ifdef	IPV6
+	if (pr->sasend->sa_family == AF_INET6 && verbose == 0) {
+		struct icmp6_filter myfilt;
+		ICMP6_FILTER_SETBLOCKALL(&myfilt);
+		ICMP6_FILTER_SETPASS(ICMP6_TIME_EXCEEDED, &myfilt);
+		ICMP6_FILTER_SETPASS(ICMP6_DST_UNREACH, &myfilt);
+		setsockopt(recvfd, IPPROTO_IPV6, ICMP6_FILTER,
+					&myfilt, sizeof(myfilt));
+	}
+#endif
 
 	sendfd = Socket(pr->sasend->sa_family, SOCK_DGRAM, 0);
 
 	pr->sabind->sa_family = pr->sasend->sa_family;
-	sport = (getpid() & 0xffff) | 0x8000;	/* our source UDP port# */
+	sport = (getpid() & 0xffff) | 0x8000;	/* our source UDP port # */
 	sock_set_port(pr->sabind, pr->salen, htons(sport));
 	Bind(sendfd, pr->sabind, pr->salen);
 
@@ -26,7 +37,7 @@ traceloop(void)
 		Setsockopt(sendfd, pr->ttllevel, pr->ttloptname, &ttl, sizeof(int));
 		bzero(pr->salast, pr->salen);
 
-		printf("%2d  ", ttl);
+		printf("%2d ", ttl);
 		fflush(stdout);
 
 		for (probe = 0; probe < nprobes; probe++) {

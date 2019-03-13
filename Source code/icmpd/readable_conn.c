@@ -8,10 +8,7 @@ readable_conn(int i)
 	char			c;
 	ssize_t			n;
 	socklen_t		len;
-	union {
-	  char				buf[MAXSOCKADDR];
-	  struct sockaddr	sock;
-	} un;
+	struct sockaddr_storage	ss;
 
 	unixfd = client[i].connfd;
 	recvfd = -1;
@@ -28,14 +25,14 @@ readable_conn(int i)
 /* end readable_conn1 */
 
 /* include readable_conn2 */
-	len = sizeof(un.buf);
-	if (getsockname(recvfd, (SA *) un.buf, &len) < 0) {
+	len = sizeof(ss);
+	if (getsockname(recvfd, (SA *) &ss, &len) < 0) {
 		err_ret("getsockname error");
 		goto clienterr;
 	}
 
-	client[i].family = un.sock.sa_family;
-	if ( (client[i].lport = sock_get_port(&un.sock, len)) == 0) {
+	client[i].family = ss.ss_family;
+	if ( (client[i].lport = sock_get_port((SA *)&ss, len)) == 0) {
 		client[i].lport = sock_bind_wild(recvfd, client[i].family);
 		if (client[i].lport <= 0) {
 			err_ret("error binding ephemeral port");
@@ -43,11 +40,6 @@ readable_conn(int i)
 		}
 	}
 	Write(unixfd, "1", 1);	/* tell client all OK */
-	FD_SET(unixfd, &allset);
-	if (unixfd > maxfd)
-		maxfd = unixfd;
-	if (i > maxi)
-		maxi = i;
 	Close(recvfd);			/* all done with client's UDP socket */
 	return(--nready);
 

@@ -7,5 +7,5 @@ sockatmark(int fd)
 
 	if (ioctl(fd, SIOCATMARK, &flag) < 0)
 		return(-1);
-	return(flag != 0 ? 1 : 0);
+	return(flag != 0);
 }

@@ -49,7 +49,7 @@ str_cli(FILE *fp, int sockfd)
 				fprintf(stderr, "%s: EOF on stdin\n", gf_time());
 #endif
 				stdineof = 1;			/* all done with stdin */
-				if (tooptr == to)
+				if (tooptr == toiptr)
 					Shutdown(sockfd, SHUT_WR);/* send FIN */
 
 			} else {

@@ -10,8 +10,7 @@ struct icmpd_err {
   char				icmpd_type;	/* actual ICMPv[46] type */
   char				icmpd_code;	/* actual ICMPv[46] code */
   socklen_t			icmpd_len;	/* length of sockaddr{} that follows */
-  struct sockaddr	icmpd_dest;	/* may be bigger */
-  char				icmpd_fill[MAXSOCKADDR - sizeof(struct sockaddr)];
+  struct sockaddr_storage	icmpd_dest;	/* sockaddr_storage handles any size */
 };
 
 #endif	/* __unpicmp_h */

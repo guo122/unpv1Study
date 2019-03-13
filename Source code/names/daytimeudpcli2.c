@@ -14,7 +14,7 @@ main(int argc, char **argv)
 	Write(sockfd, "", 1);	/* send 1-byte datagram */
 
 	n = Read(sockfd, recvline, MAXLINE);
-	recvline[n] = 0;	/* null terminate */
+	recvline[n] = '\0';	/* null terminate */
 	Fputs(recvline, stdout);
 
 	exit(0);

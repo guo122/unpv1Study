@@ -23,7 +23,7 @@ mcast_set_ttl(int sockfd, int val)
 #endif
 
 	default:
-		errno = EPROTONOSUPPORT;
+		errno = EAFNOSUPPORT;
 		return(-1);
 	}
 }

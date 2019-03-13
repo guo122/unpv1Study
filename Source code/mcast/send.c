@@ -1,12 +1,12 @@
 #include	"unp.h"
 #include	<sys/utsname.h>
 
-#define	SENDRATE	5		/* send one datagram every 5 seconds */
+#define	SENDRATE	5		/* send one datagram every five seconds */
 
 void
 send_all(int sendfd, SA *sadest, socklen_t salen)
 {
-	static char		line[MAXLINE];		/* hostname and process ID */
+	char		line[MAXLINE];		/* hostname and process ID */
 	struct utsname	myname;
 
 	if (uname(&myname) < 0)

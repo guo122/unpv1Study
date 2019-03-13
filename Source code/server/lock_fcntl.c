@@ -12,9 +12,8 @@ my_lock_init(char *pathname)
 
 		/* 4must copy caller's string, in case it's a constant */
     strncpy(lock_file, pathname, sizeof(lock_file));
-    Mktemp(lock_file);
+    lock_fd = Mkstemp(lock_file);
 
-    lock_fd = Open(lock_file, O_CREAT | O_WRONLY, FILE_MODE);
     Unlink(lock_file);			/* but lock_fd remains open */
 
 	lock_it.l_type = F_WRLCK;

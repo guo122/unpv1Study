@@ -8,7 +8,7 @@ main(int argc, char **argv)
 	int					i, maxi, listenfd, connfd, sockfd;
 	int					nready;
 	ssize_t				n;
-	char				line[MAXLINE];
+	char				buf[MAXLINE];
 	socklen_t			clilen;
 	struct pollfd		client[OPEN_MAX];
 	struct sockaddr_in	cliaddr, servaddr;
@@ -62,7 +62,7 @@ main(int argc, char **argv)
 			if ( (sockfd = client[i].fd) < 0)
 				continue;
 			if (client[i].revents & (POLLRDNORM | POLLERR)) {
-				if ( (n = readline(sockfd, line, MAXLINE)) < 0) {
+				if ( (n = read(sockfd, buf, MAXLINE)) < 0) {
 					if (errno == ECONNRESET) {
 							/*4connection reset by client */
 #ifdef	NOTDEF
@@ -71,7 +71,7 @@ main(int argc, char **argv)
 						Close(sockfd);
 						client[i].fd = -1;
 					} else
-						err_sys("readline error");
+						err_sys("read error");
 				} else if (n == 0) {
 						/*4connection closed by client */
 #ifdef	NOTDEF
@@ -80,7 +80,7 @@ main(int argc, char **argv)
 					Close(sockfd);
 					client[i].fd = -1;
 				} else
-					Writen(sockfd, line, n);
+					Writen(sockfd, buf, n);
 
 				if (--nready <= 0)
 					break;				/* no more readable descriptors */

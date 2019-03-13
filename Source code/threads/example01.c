@@ -2,7 +2,7 @@
 
 #define	NLOOP 5000
 
-int				counter;		/* this is incremented by the threads */
+int				counter;		/* incremented by threads */
 
 void	*doit(void *);
 

@@ -1,8 +1,9 @@
 #include	"trace.h"
 
-char *
+const char *
 icmpcode_v4(int code)
 {
+	static char errbuf[100];
 	switch (code) {
 	case  0:	return("network unreachable");
 	case  1:	return("host unreachable");
@@ -20,6 +21,7 @@ icmpcode_v4(int code)
 	case 13:	return("communication administratively prohibited by filtering");
 	case 14:	return("host recedence violation");
 	case 15:	return("precedence cutoff in effect");
-	default:	return("[unknown code]");
+	default:	sprintf(errbuf, "[unknown code %d]", code);
+				return errbuf;
 	}
 }

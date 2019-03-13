@@ -1,7 +1,7 @@
 #include	"ping.h"
 
 void
-proc_v4(char *ptr, ssize_t len, struct timeval *tvrecv)
+proc_v4(char *ptr, ssize_t len, struct msghdr *msg, struct timeval *tvrecv)
 {
 	int				hlen1, icmplen;
 	double			rtt;
@@ -11,16 +11,18 @@ proc_v4(char *ptr, ssize_t len, struct timeval *tvrecv)
 
 	ip = (struct ip *) ptr;		/* start of IP header */
 	hlen1 = ip->ip_hl << 2;		/* length of IP header */
+	if (ip->ip_p != IPPROTO_ICMP)
+		return;				/* not ICMP */
 
 	icmp = (struct icmp *) (ptr + hlen1);	/* start of ICMP header */
 	if ( (icmplen = len - hlen1) < 8)
-		err_quit("icmplen (%d) < 8", icmplen);
+		return;				/* malformed packet */
 
 	if (icmp->icmp_type == ICMP_ECHOREPLY) {
 		if (icmp->icmp_id != pid)
 			return;			/* not a response to our ECHO_REQUEST */
 		if (icmplen < 16)
-			err_quit("icmplen (%d) < 16", icmplen);
+			return;			/* not enough data to use */
 
 		tvsend = (struct timeval *) icmp->icmp_data;
 		tv_sub(tvrecv, tvsend);

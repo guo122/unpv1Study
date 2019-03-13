@@ -36,6 +36,7 @@ get_ifi_info(int family, int doaliases)
 				ifi->ifi_flags = flags;
 				if (sa->sa_family == AF_LINK) {
 					sdl = (struct sockaddr_dl *) sa;
+					ifi->ifi_index = sdl->sdl_index;
 					if (sdl->sdl_nlen > 0)
 						snprintf(ifi->ifi_name, IFI_NAME, "%*s",
 								 sdl->sdl_nlen, &sdl->sdl_data[0]);
@@ -62,6 +63,7 @@ get_ifi_info(int family, int doaliases)
 				*ifipnext = ifi;			/* prev points to this new one */
 				ifipnext = &ifi->ifi_next;	/* ptr to next one goes here */
 				ifi->ifi_flags = ifisave->ifi_flags;
+				ifi->ifi_index = ifisave->ifi_index;
 				ifi->ifi_hlen = ifisave->ifi_hlen;
 				memcpy(ifi->ifi_name, ifisave->ifi_name, IFI_NAME);
 				memcpy(ifi->ifi_haddr, ifisave->ifi_haddr, IFI_HADDR);

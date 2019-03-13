@@ -7,24 +7,26 @@
 			/* function prototypes for internal functions */
 static void	do_errtest(void);
 static void	do_funccall(const char *, const char *, int, int, int, int, int);
-static int	do_onetest(int);
-static char *str_fam(int);
-static char *str_sock(int);
+static int	do_onetest(char *, char *, struct addrinfo *, int);
+static const char *str_fam(int);
+static const char *str_sock(int);
 static void	usage(const char *);
 
 			/* globals */
-char	host[NI_MAXHOST];
-char	serv[NI_MAXSERV];
-int		doerrtest;
-int		loopcount = 1;
 int		vflag;
-
-struct addrinfo	hints;		/* set by command-line options */
 
 int
 main(int argc, char **argv)
 {
+	int				doerrtest = 0;
+	int				loopcount = 1;
 	int				c, i;
+	char			*host = NULL;
+	char			hostbuf[NI_MAXHOST];
+	char			*serv = NULL;
+	char			servbuf[NI_MAXSERV];
+	struct protoent	*proto;
+	struct addrinfo	hints;		/* set by command-line options */
 
 	if (argc < 2)
 		usage("");
@@ -64,7 +66,8 @@ main(int argc, char **argv)
 			usage("invalid -f option");
 
 		case 'h':			/* host */
-			strncpy(host, optarg, NI_MAXHOST-1);
+			strncpy(hostbuf, optarg, NI_MAXHOST-1);
+			host = hostbuf;
 			break;
 
 		case 'l':			/* loop count */
@@ -76,10 +79,16 @@ main(int argc, char **argv)
 			break;
 
 		case 'r':			/* protocol */
-			usage("-r option not yet implemented");
+			if ((proto = getprotobyname(optarg)) == NULL) {
+				hints.ai_protocol = atoi(optarg);
+			} else {
+				hints.ai_protocol = proto->p_proto;
+			}
+			break;
 
 		case 's':
-			strncpy(serv, optarg, NI_MAXSERV-1);
+			strncpy(servbuf, optarg, NI_MAXSERV-1);
+			serv = servbuf;
 			break;
 
 		case 't':			/* socket type */
@@ -93,12 +102,10 @@ main(int argc, char **argv)
 				break;
 			}
 
-#ifdef	SOCK_RAW
 			if (strcmp(optarg, "raw") == 0) {
 				hints.ai_socktype = SOCK_RAW;
 				break;
 			}
-#endif
 
 #ifdef	SOCK_RDM
 			if (strcmp(optarg, "rdm") == 0) {
@@ -113,7 +120,7 @@ main(int argc, char **argv)
 				break;
 			}
 #endif
-			usage("invalid -f option");
+			usage("invalid -t option");
 
 		case 'v':
 			vflag = 1;
@@ -123,6 +130,9 @@ main(int argc, char **argv)
 			usage("unrecognized option");
 		}
 	}
+	if (optind < argc) {
+		usage("extra args");
+	}
 
 	if (doerrtest) {
 		do_errtest();
@@ -130,7 +140,7 @@ main(int argc, char **argv)
 	}
 
 	for (i = 1; i <= loopcount; i++) {
-		if (do_onetest(i) > 0)
+		if (do_onetest(host, serv, &hints, i) > 0)
 			exit(1);
 
 		if (i % 1000 == 0) {
@@ -225,20 +235,20 @@ do_funccall(const char *host, const char *serv,
 }
 
 static int
-do_onetest(int loopcount)
+do_onetest(char *host, char *serv, struct addrinfo *hints, int iteration)
 {
 	int				rc, fd, verbose;
 	struct addrinfo	*res, *rescopy;
 	char			rhost[NI_MAXHOST], rserv[NI_MAXSERV];
 
-	verbose = vflag && (loopcount == 1);	/* only first time */
+	verbose = vflag && (iteration == 1);	/* only first time */
 
-	if (host[0] != 0 && verbose)
+	if (host != NULL && verbose)
 		printf("host = %s\n", host);
-	if (serv[0] != 0 && verbose)
+	if (serv != NULL && verbose)
 		printf("serv = %s\n", serv);
 
-	rc = getaddrinfo(host, serv, &hints, &res);
+	rc = getaddrinfo(host, serv, hints, &res);
 	if (rc != 0) {
 		printf("getaddrinfo return code = %d (%s)\n", rc, gai_strerror(rc));
 		return(1);
@@ -246,12 +256,12 @@ do_onetest(int loopcount)
 
 	rescopy = res;
 	do {
-		if (loopcount == 1) {	/* always print results first time */
+		if (iteration == 1) {	/* always print results first time */
 			printf("\nsocket(%s, %s, %d)", str_fam(res->ai_family),
 					str_sock(res->ai_socktype), res->ai_protocol);
 
 				/* canonname should be set only in first addrinfo{} */
-			if (hints.ai_flags & AI_CANONNAME) {
+			if (hints->ai_flags & AI_CANONNAME) {
 				if (res->ai_canonname)
 					printf(", ai_canonname = %s", res->ai_canonname);
 			}
@@ -280,7 +290,7 @@ do_onetest(int loopcount)
 				printf("\tgetnameinfo: host = %s, serv = %s\n",
 					   rhost, rserv);
 		} else
-			printf("getnameinfo returned %d\n", rc);
+			printf("getnameinfo returned %d (%s)\n", rc, gai_strerror(rc));
 
 	} while ( (res = res->ai_next) != NULL);
 
@@ -299,7 +309,7 @@ usage(const char *msg)
 "         -p    AI_PASSIVE flag\n"
 "         -l N  loop N times (check for memory leaks with ps)\n"
 "         -f X  address family, X = inet, inet6, unix\n"
-"         -r X  protocol (not yet implemented)\n"
+"         -r X  protocol, X = tcp, udp, ... or number e.g. 6, 17, ...\n"
 "         -t X  socket type, X = stream, dgram, raw, rdm, seqpacket\n"
 "         -v    verbose\n"
 "         -e    only do test of error returns (no options required)\n"
@@ -311,7 +321,7 @@ usage(const char *msg)
 	exit(1);
 }
 
-static char *
+static const char *
 str_fam(int family)
 {
 #ifdef	IPv4
@@ -329,14 +339,19 @@ str_fam(int family)
 	return("<unknown family>");
 }
 
-static char *
+static const char *
 str_sock(int socktype)
 {
-	if (socktype == SOCK_STREAM)
-		return("SOCK_STREAM");
-	if (socktype == SOCK_DGRAM)
-		return("SOCK_DGRAM");
-	if (socktype == SOCK_RAW)
-		return("SOCK_RAW");
-	return("<unknown socktype>");
+	switch(socktype) {
+	case SOCK_STREAM:	return "SOCK_STREAM";
+	case SOCK_DGRAM:	return "SOCK_DGRAM";
+	case SOCK_RAW:		return "SOCK_RAW";
+#ifdef SOCK_RDM
+	case SOCK_RDM:		return "SOCK_RDM";
+#endif
+#ifdef SOCK_SEQPACKET
+	case SOCK_SEQPACKET:return "SOCK_SEQPACKET";
+#endif
+	default:		return "<unknown socktype>";
+	}
 }

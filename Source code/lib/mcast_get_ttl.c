@@ -29,7 +29,7 @@ mcast_get_ttl(int sockfd)
 #endif
 
 	default:
-		errno = EPROTONOSUPPORT;
+		errno = EAFNOSUPPORT;
 		return(-1);
 	}
 }

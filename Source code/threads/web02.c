@@ -11,7 +11,7 @@ struct file {
   char	*f_host;			/* hostname or IP address */
   int    f_fd;				/* descriptor */
   int	 f_flags;			/* F_xxx below */
-  int	 f_tid;				/* thread ID */
+  pthread_t	 f_tid;			/* thread ID */
 } file[MAXFILES];
 #define	F_CONNECTING	1	/* connect() in progress */
 #define	F_READING		2	/* connect() complete; now reading */

@@ -1,12 +1,13 @@
 /* include readline */
 #include	"unp.h"
 
+static int	read_cnt;
+static char	*read_ptr;
+static char	read_buf[MAXLINE];
+
 static ssize_t
 my_read(int fd, char *ptr)
 {
-	static int	read_cnt = 0;
-	static char	*read_ptr;
-	static char	read_buf[MAXLINE];
 
 	if (read_cnt <= 0) {
 again:
@@ -27,7 +28,7 @@ again:
 ssize_t
 readline(int fd, void *vptr, size_t maxlen)
 {
-	int		n, rc;
+	ssize_t	n, rc;
 	char	c, *ptr;
 
 	ptr = vptr;
@@ -37,16 +38,22 @@ readline(int fd, void *vptr, size_t maxlen)
 			if (c == '\n')
 				break;	/* newline is stored, like fgets() */
 		} else if (rc == 0) {
-			if (n == 1)
-				return(0);	/* EOF, no data read */
-			else
-				break;		/* EOF, some data was read */
+			*ptr = 0;
+			return(n - 1);	/* EOF, n - 1 bytes were read */
 		} else
 			return(-1);		/* error, errno set by read() */
 	}
 
 	*ptr = 0;	/* null terminate like fgets() */
 	return(n);
+}
+
+ssize_t
+readlinebuf(void **vptrptr)
+{
+	if (read_cnt)
+		*vptrptr = read_ptr;
+	return(read_cnt);
 }
 /* end readline */
 

@@ -36,7 +36,7 @@ str_cli(FILE *fp, int sockfd)
 		if (FD_ISSET(fileno(fp), &rset)) {  /* input is readable */
 			if (Fgets(sendline, MAXLINE, fp) == NULL) {
 				stdineof = 1;
-				alarm(0);			/* turn of heartbeat */
+				alarm(0);			/* turn off heartbeat */
 				Shutdown(sockfd, SHUT_WR);	/* send FIN */
 				FD_CLR(fileno(fp), &rset);
 				continue;

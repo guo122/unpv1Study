@@ -4,12 +4,14 @@ void
 str_echo(int sockfd)
 {
 	ssize_t		n;
-	char		line[MAXLINE];
+	char		buf[MAXLINE];
 
-	for ( ; ; ) {
-		if ( (n = Readline(sockfd, line, MAXLINE)) == 0)
-			return;		/* connection closed by other end */
+again:
+	while ( (n = read(sockfd, buf, MAXLINE)) > 0)
+		Writen(sockfd, buf, n);
 
-		Writen(sockfd, line, n);
-	}
+	if (n < 0 && errno == EINTR)
+		goto again;
+	else if (n < 0)
+		err_sys("str_echo: read error");
 }

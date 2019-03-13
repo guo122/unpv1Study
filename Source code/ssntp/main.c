@@ -25,10 +25,11 @@ main(int argc, char **argv)
 		/* 4obtain interface list and process each one */
 	for (ifi = Get_ifi_info(mcastsa->sa_family, 1); ifi != NULL;
 		 ifi = ifi->ifi_next) {
-		if (ifi->ifi_flags & IFF_MULTICAST)
+		if (ifi->ifi_flags & IFF_MULTICAST) {
 			Mcast_join(sockfd, mcastsa, salen, ifi->ifi_name, 0);
 			printf("joined %s on %s\n",
 				   Sock_ntop(mcastsa, salen), ifi->ifi_name);
+		}
 	}
 #endif
 

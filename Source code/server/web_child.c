@@ -1,6 +1,6 @@
 #include	"unp.h"
 
-#define	MAXN	16384		/* max #bytes that a client can request */
+#define	MAXN	16384		/* max # bytes client can request */
 
 void
 web_child(int sockfd)

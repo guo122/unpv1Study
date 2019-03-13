@@ -27,8 +27,8 @@ int     ttl, max_ttl;## 22 ##src/traceroute/trace.h##
 int     verbose;## 23 ##src/traceroute/trace.h##
 
             /* function prototypes */## 24 ##src/traceroute/trace.h##
-char   *icmpcode_v4(int);## 25 ##src/traceroute/trace.h##
-char   *icmpcode_v6(int);## 26 ##src/traceroute/trace.h##
+const char *icmpcode_v4(int);## 25 ##src/traceroute/trace.h##
+const char *icmpcode_v6(int);## 26 ##src/traceroute/trace.h##
 int     recv_v4(int, struct timeval *);## 27 ##src/traceroute/trace.h##
 int     recv_v6(int, struct timeval *);## 28 ##src/traceroute/trace.h##
 void    sig_alrm(int);## 29 ##src/traceroute/trace.h##
@@ -36,7 +36,7 @@ void    traceloop(void);## 30 ##src/traceroute/trace.h##
 void    tv_sub(struct timeval *, struct timeval *);## 31 ##src/traceroute/trace.h##
 
 struct proto {## 32 ##src/traceroute/trace.h##
-    char   *(*icmpcode) (int);## 33 ##src/traceroute/trace.h##
+    const char *(*icmpcode) (int);## 33 ##src/traceroute/trace.h##
     int     (*recv) (int, struct timeval *);## 34 ##src/traceroute/trace.h##
     struct sockaddr *sasend;    /* sockaddr{} for send, from getaddrinfo */## 35 ##src/traceroute/trace.h##
     struct sockaddr *sarecv;    /* sockaddr{} for receiving */## 36 ##src/traceroute/trace.h##
@@ -50,7 +50,7 @@ struct proto {## 32 ##src/traceroute/trace.h##
 
 #ifdef  IPV6## 44 ##src/traceroute/trace.h##
 
-#include    "ip6.h"             /* should be <netinet/ip6.h> */## 45 ##src/traceroute/trace.h##
-#include    "icmp6.h"           /* should be <netinet/icmp6.h> */## 46 ##src/traceroute/trace.h##
+#include    <netinet/ip6.h>## 45 ##src/traceroute/trace.h##
+#include    <netinet/icmp6.h>## 46 ##src/traceroute/trace.h##
 
 #endif## 47 ##src/traceroute/trace.h##

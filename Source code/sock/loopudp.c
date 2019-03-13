@@ -31,7 +31,7 @@ loop_udp(int sockfd)
 #define	CONTROLLEN	(sizeof(struct cmsghdr) + sizeof(struct in_addr))
 #endif	/* IP_RECVDSTADDR */
 
-#endif	/* MSG_TRUNC */
+#endif	/* HAVE_MSGHDR_MSG_CONTROL */
 
 	if (pauseinit)
 		sleep_us(pauseinit*1000);	/* intended for server */
@@ -95,7 +95,7 @@ loop_udp(int sockfd)
 		if (FD_ISSET(sockfd, &rset)) {	/* data to read from socket */
 			if (server) {
 				clilen = sizeof(cliaddr);
-#ifndef	MSG_TRUNC	/* vanilla BSD sockets */
+#ifndef	HAVE_MSGHDR_MSG_CONTROL	/* vanilla BSD sockets */
 				nread = recvfrom(sockfd, rbuf, readlen, 0,
 									(struct sockaddr *) &cliaddr, &clilen);
 
@@ -139,7 +139,7 @@ loop_udp(int sockfd)
 							err_quit("control level != IPPROTO_IP");
 						if (cmptr->cmsg_type != IP_RECVDSTADDR)
 							err_quit("control type != IP_RECVDSTADDR");
-						bcopy(CMSG_DATA(cmptr), &dstinaddr,
+						memcpy(&dstinaddr, CMSG_DATA(cmptr),
 							  sizeof(struct in_addr));
 						bzero(cmptr, CONTROLLEN);
 

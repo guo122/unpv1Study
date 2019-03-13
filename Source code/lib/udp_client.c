@@ -2,7 +2,7 @@
 #include	"unp.h"
 
 int
-udp_client(const char *host, const char *serv, void **saptr, socklen_t *lenp)
+udp_client(const char *host, const char *serv, SA **saptr, socklen_t *lenp)
 {
 	int				sockfd, n;
 	struct addrinfo	hints, *res, *ressave;
@@ -36,7 +36,7 @@ udp_client(const char *host, const char *serv, void **saptr, socklen_t *lenp)
 /* end udp_client */
 
 int
-Udp_client(const char *host, const char *serv, void **saptr, socklen_t *lenptr)
+Udp_client(const char *host, const char *serv, SA **saptr, socklen_t *lenptr)
 {
 	return(udp_client(host, serv, saptr, lenptr));
 }

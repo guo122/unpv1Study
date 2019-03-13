@@ -6,5 +6,5 @@ sig_alrm(int signo)
 	(*pr->fsend)();
 
 	alarm(1);
-	return;		/* probably interrupts recvfrom() */
+	return;
 }

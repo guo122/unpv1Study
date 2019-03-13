@@ -1,7 +1,7 @@
 include ../Make.defines
 
 PROGS =	accept_eintr test1 treadline1 treadline2 treadline3 \
-		tsnprintf tisfdtype
+		tsnprintf tisfdtype tshutdown
 
 TEST1_OBJS = test1.o funcs.o
 
@@ -30,6 +30,9 @@ tsnprintf:	tsnprintf.o
 
 tisfdtype:	tisfdtype.o
 		${CC} ${CFLAGS} -o $@ tisfdtype.o ${LIBS}
+
+tshutdown:	tshutdown.o
+		${CC} ${CFLAGS} -o $@ tshutdown.o ${LIBS}
 
 clean:
 		rm -f ${PROGS} core core.* *.o temp.* *.out typescript*

@@ -13,7 +13,7 @@ int
 cliopen(char *host, char *port)
 {
 	int					fd, i, on;
-	char				*protocol;
+	const char			*protocol;
 	struct in_addr		inaddr;
 	struct servent		*sp;
 	struct hostent		*hp;
@@ -41,7 +41,7 @@ cliopen(char *host, char *port)
 	if (inet_aton(host, &inaddr) == 1)
 		servaddr.sin_addr = inaddr;	/* it's dotted-decimal */
 	else if ( (hp = gethostbyname(host)) != NULL)
-		bcopy(hp->h_addr, &servaddr.sin_addr, hp->h_length);
+		memcpy(&servaddr.sin_addr, hp->h_addr, hp->h_length);
 	else
 		err_quit("invalid hostname: %s", host);
 

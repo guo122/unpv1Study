@@ -10,10 +10,14 @@ dg_cli(FILE *fp, int sockfd, const SA *pservaddr, socklen_t servlen)
 	ssize_t			n;
 	struct timeval	tv;
 	struct icmpd_err icmpd_err;
+	struct sockaddr_un sun;
 
 	Sock_bind_wild(sockfd, pservaddr->sa_family);
 
-	icmpfd = Tcp_connect("/unix", ICMPD_PATH);
+	icmpfd = Socket(AF_LOCAL, SOCK_STREAM, 0);
+	sun.sun_family = AF_LOCAL;
+	strcpy(sun.sun_path, ICMPD_PATH);
+	Connect(icmpfd, (SA *)&sun, sizeof(sun));
 	Write_fd(icmpfd, "1", 1, sockfd);
 	n = Read(icmpfd, recvline, 1);
 	if (n != 1 || recvline[0] != '1')

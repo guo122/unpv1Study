@@ -16,7 +16,7 @@ struct rec {					/* format of outgoing UDP data */
 char	 recvbuf[BUFSIZE];
 char	 sendbuf[BUFSIZE];
 
-int		 datalen;			/* #bytes of data, following ICMP header */
+int		 datalen;			/* # bytes of data following ICMP header */
 char	*host;
 u_short	 sport, dport;
 int		 nsent;				/* add 1 for each sendto() */
@@ -27,8 +27,8 @@ int		 ttl, max_ttl;
 int		 verbose;
 
 			/* function prototypes */
-char	*icmpcode_v4(int);
-char	*icmpcode_v6(int);
+const char	*icmpcode_v4(int);
+const char	*icmpcode_v6(int);
 int		 recv_v4(int, struct timeval *);
 int		 recv_v6(int, struct timeval *);
 void	 sig_alrm(int);
@@ -36,7 +36,7 @@ void	 traceloop(void);
 void	 tv_sub(struct timeval *, struct timeval *);
 
 struct proto {
-  char	*(*icmpcode)(int);
+  const char	*(*icmpcode)(int);
   int	 (*recv)(int, struct timeval *);
   struct sockaddr  *sasend;	/* sockaddr{} for send, from getaddrinfo */
   struct sockaddr  *sarecv;	/* sockaddr{} for receiving */
@@ -50,7 +50,7 @@ struct proto {
 
 #ifdef	IPV6
 
-#include	"ip6.h"			/* should be <netinet/ip6.h> */
-#include	"icmp6.h"		/* should be <netinet/icmp6.h> */
+#include	<netinet/ip6.h>
+#include	<netinet/icmp6.h>
 
 #endif

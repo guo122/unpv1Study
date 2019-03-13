@@ -2,7 +2,7 @@
 #include	"unproute.h"
 
 #define	BUFLEN	(sizeof(struct rt_msghdr) + 512)
-					/* 8 * sizeof(struct sockaddr_in6) = 192 */
+					/* sizeof(struct sockaddr_in6) * 8 = 192 */
 #define	SEQ		9999
 
 int
@@ -32,6 +32,7 @@ main(int argc, char **argv)
 	rtm->rtm_seq = SEQ;
 
 	sin = (struct sockaddr_in *) (rtm + 1);
+	sin->sin_len = sizeof(struct sockaddr_in);
 	sin->sin_family = AF_INET;
     Inet_pton(AF_INET, argv[1], &sin->sin_addr);
 

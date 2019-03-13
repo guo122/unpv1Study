@@ -63,7 +63,7 @@ do_parent(void)
 				if (errno != EINTR)
 					err_sys("connect error, j = %d", j);
 				printf("timeout, %d connections completed\n", j-1);
-				for (k = 1; k < j; k++)
+				for (k = 1; k <= j; k++)
 					Close(fd[k]);
 				break;	/* next value of backlog */
 			}
@@ -82,7 +82,7 @@ do_child(void)
 	int		listenfd, backlog, junk;
 	const int	on = 1;
 
-	Close(pipefd[1]);
+	Close(pfd);
 
 	Read(cfd, &backlog, sizeof(int));	/* wait for parent */
 	while (backlog >= 0) {
@@ -94,6 +94,6 @@ do_child(void)
 		Write(cfd, &junk, sizeof(int));	/* tell parent */
 
 		Read(cfd, &backlog, sizeof(int));/* just wait for parent */
-		Close(listenfd);	/* closes all queued connections too */
+		Close(listenfd);	/* closes all queued connections, too */
 	}
 }

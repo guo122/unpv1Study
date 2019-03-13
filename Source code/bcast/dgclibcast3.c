@@ -39,10 +39,11 @@ dg_cli(FILE *fp, int sockfd, const SA *pservaddr, socklen_t servlen)
 			} else {
 				recvline[n] = 0;	/* null terminate */
 				printf("from %s: %s",
-						Sock_ntop_host(preply_addr, servlen), recvline);
+						Sock_ntop_host(preply_addr, len), recvline);
 			}
 		}
 	}
+	free(preply_addr);
 }
 
 static void

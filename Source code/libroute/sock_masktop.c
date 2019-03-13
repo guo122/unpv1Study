@@ -1,7 +1,7 @@
 #include	"unproute.h"
 
-char *
-sock_masktop(struct sockaddr *sa, socklen_t salen)
+const char *
+sock_masktop(SA *sa, socklen_t salen)
 {
 	static char		str[INET6_ADDRSTRLEN];
 	unsigned char	*ptr = &sa->sa_data[2];

@@ -5,7 +5,8 @@ str_cli(FILE *fp, int sockfd)
 {
 	int			maxfdp1, stdineof;
 	fd_set		rset;
-	char		sendline[MAXLINE], recvline[MAXLINE];
+	char		buf[MAXLINE];
+	int		n;
 
 	stdineof = 0;
 	FD_ZERO(&rset);
@@ -17,25 +18,25 @@ str_cli(FILE *fp, int sockfd)
 		Select(maxfdp1, &rset, NULL, NULL, NULL);
 
 		if (FD_ISSET(sockfd, &rset)) {	/* socket is readable */
-			if (Readline(sockfd, recvline, MAXLINE) == 0) {
+			if ( (n = Read(sockfd, buf, MAXLINE)) == 0) {
 				if (stdineof == 1)
 					return;		/* normal termination */
 				else
 					err_quit("str_cli: server terminated prematurely");
 			}
 
-			Fputs(recvline, stdout);
+			Write(fileno(stdout), buf, n);
 		}
 
 		if (FD_ISSET(fileno(fp), &rset)) {  /* input is readable */
-			if (Fgets(sendline, MAXLINE, fp) == NULL) {
+			if ( (n = Read(fileno(fp), buf, MAXLINE)) == 0) {
 				stdineof = 1;
 				Shutdown(sockfd, SHUT_WR);	/* send FIN */
 				FD_CLR(fileno(fp), &rset);
 				continue;
 			}
 
-			Writen(sockfd, sendline, strlen(sendline));
+			Writen(sockfd, buf, n);
 		}
 	}
 }

@@ -6,8 +6,8 @@ struct l_fixedpt {		/* 64-bit fixed-point */
 };
 
 struct s_fixedpt {		/* 32-bit fixed-point */
-  u_short	int_part;
-  u_short	fraction;
+  uint16_t	int_part;
+  uint16_t	fraction;
 };
 
 struct ntpdata {		/* NTP header */

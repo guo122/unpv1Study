@@ -44,7 +44,7 @@ if_nameindex(void)
 	ifptr->if_name = NULL;	/* mark end of array of structs */
 	ifptr->if_index = 0;
 	free(buf);
-	return(result);			/* call can free() this when done */
+	return(result);			/* caller must free() this when done */
 }
 /* end if_nameindex */
 

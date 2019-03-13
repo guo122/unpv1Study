@@ -6,13 +6,14 @@
 void
 dg_echo(int sockfd, SA *pcliaddr, socklen_t clilen)
 {
-	int					flags;
-	const int			on = 1;
-	socklen_t			len;
-	ssize_t				n;
-	char				mesg[MAXLINE], str[INET6_ADDRSTRLEN], ifname[IFNAMSIZ];
-	struct in_addr		in_zero;
-	struct in_pktinfo	pktinfo;
+	int						flags;
+	const int				on = 1;
+	socklen_t				len;
+	ssize_t					n;
+	char					mesg[MAXLINE], str[INET6_ADDRSTRLEN],
+							ifname[IFNAMSIZ];
+	struct in_addr			in_zero;
+	struct unp_in_pktinfo	pktinfo;
 
 #ifdef	IP_RECVDSTADDR
 	if (setsockopt(sockfd, IPPROTO_IP, IP_RECVDSTADDR, &on, sizeof(on)) < 0)

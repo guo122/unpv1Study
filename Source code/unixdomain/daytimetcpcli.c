@@ -13,8 +13,8 @@ main(int argc, char **argv)
 
 	sockfd = Tcp_connect(argv[1], argv[2]);
 
-	sa = Malloc(MAXSOCKADDR);
-	len = MAXSOCKADDR;
+	sa = Malloc(sizeof(struct sockaddr_storage));
+	len = sizeof(struct sockaddr_storage);
 	Getpeername(sockfd, sa, &len);
 	printf("connected to %s\n", Sock_ntop_host(sa, len));
 	sleep(5);

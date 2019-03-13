@@ -9,7 +9,7 @@
 # System = @host@
 
 CC = @CC@
-CFLAGS = @CFLAGS@
+CFLAGS = -I../lib @CFLAGS@
 LIBS = @LIBUNP@ @LIBS@
 LIBS_XTI = @LIBUNPXTI@ @LIBUNP@ @LIBS_XTI@
 RANLIB = @RANLIB@

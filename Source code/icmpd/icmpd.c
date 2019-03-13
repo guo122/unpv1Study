@@ -5,6 +5,7 @@ int
 main(int argc, char **argv)
 {
 	int		i, sockfd;
+	struct sockaddr_un sun;
 
 	if (argc != 1)
 		err_quit("usage: icmpd");
@@ -24,10 +25,14 @@ main(int argc, char **argv)
 	maxfd = max(maxfd, fd6);
 #endif
 
-	listenfd = Tcp_listen("/unix", ICMPD_PATH, &addrlen);
+	listenfd = Socket(AF_UNIX, SOCK_STREAM, 0);
+	sun.sun_family = AF_LOCAL;
+	strcpy(sun.sun_path, ICMPD_PATH);
+	unlink(ICMPD_PATH);
+	Bind(listenfd, (SA *)&sun, sizeof(sun));
+	Listen(listenfd, LISTENQ);
 	FD_SET(listenfd, &allset);
 	maxfd = max(maxfd, listenfd);
-	cliaddr = Malloc(addrlen);
 /* end icmpd1 */
 
 /* include icmpd2 */

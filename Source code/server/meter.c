@@ -4,7 +4,7 @@
 /*
  * Allocate an array of "nchildren" longs in shared memory that can
  * be used as a counter by each child of how many clients it services.
- * See pp. 467-470 of "Advanced Programming in the Unix Environment".
+ * See pp. 467-470 of "Advanced Programming in the Unix Environment."
  */
 
 long *

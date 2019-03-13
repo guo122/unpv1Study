@@ -10,6 +10,9 @@ main(int argc, char **argv)
 		err_quit("usage: udpcli <IPaddress>");
 
 	bzero(&servaddr, sizeof(servaddr));
+#ifdef	HAVE_SOCKADDR_SA_LEN
+	servaddr.sin_len = sizeof(servaddr);
+#endif
 	servaddr.sin_family = AF_INET;
 	servaddr.sin_port = htons(7);
 	Inet_pton(AF_INET, argv[1], &servaddr.sin_addr);

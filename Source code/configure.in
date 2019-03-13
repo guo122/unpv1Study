@@ -1,5 +1,5 @@
 dnl
-dnl autoconf script for UNP 2/e Volume 1 source code.
+dnl autoconf script for UNP 3/e Volume 1 source code.
 dnl Process this file with autoconf to produce a configure script.
 dnl
 dnl The end result of running configure is the "config.h" file and the
@@ -11,13 +11,14 @@ dnl The header "unp.h" that is in every source directory then does a
 dnl #include "../config.h" and the Makefile in each source directory
 dnl then does a include of ../Make.defines.
 dnl
+AC_REVISION($Revision: 1.13 $)
 AC_INIT(lib/unp.h)
 AC_CANONICAL_HOST
 AC_CONFIG_HEADER(config.h)
 
 dnl The following cpu_vendor_os string goes into config.h.
 dnl
-AC_DEFINE_UNQUOTED(CPU_VENDOR_OS, "$host")
+AC_DEFINE_UNQUOTED(CPU_VENDOR_OS, "$host", [CPU, vendor, and operating system])
 
 dnl ##################################################################
 dnl Checks for programs.
@@ -29,7 +30,6 @@ dnl the definitions that we're looking for in some system headers.
 dnl The configure script uses both CFLAGS and CPPFLAGS when compiling.
 case "$host_os" in
 *aix*)		CPPFLAGS="$CPPFLAGS -D_ALL_SOURCE" ;;
-*hpux*)		CPPFLAGS="$CPPFLAGS -D_HPUX_SOURCE" ;;
 *osf*)		CPPFLAGS="$CPPFLAGS -D_SOCKADDR_LEN" ;;
 esac
 
@@ -61,7 +61,7 @@ else
 fi
 
 AC_CHECK_LIB(nsl, t_open)
-AC_CHECK_LIB(socket, socket)
+AC_SEARCH_LIBS(socket, socket)
 
 dnl Bind 8.1.1 places its library in /usr/local/bind/lib/libbind.a; we check
 dnl for it first.  Also check for libbind.a in user's home directory.
@@ -136,11 +136,51 @@ dnl ##################################################################
 dnl Checks for header files.
 dnl
 dnl The list of headers in the AC_CHECK_HEADERS macro is the same as in
-dnl our "unp.h" header, followed by our "unpxti.h" header.  <sys/sysctl.h>
-dnl is not #included by "unp.h", but used in "lib/wrapunix.c".
+dnl our "unp.h" header, followed by our "unpxti.h" header.
 dnl
 AC_HEADER_STDC
-AC_CHECK_HEADERS(sys/types.h sys/socket.h sys/time.h time.h netinet/in.h arpa/inet.h errno.h fcntl.h netdb.h signal.h stdio.h stdlib.h string.h sys/stat.h sys/uio.h unistd.h sys/wait.h sys/un.h sys/select.h poll.h strings.h sys/ioctl.h sys/filio.h sys/sockio.h pthread.h sys/sysctl.h poll.h xti.h xti_inet.h netconfig.h netdir.h stropts.h)
+dnl
+dnl The includes (the 4th argument to AC_CHECK_HEADERS) here are
+dnl the defeault set ($ac_includes_default) plus <sys/param.h>
+dnl for <sys/sysctl.h> on NetBSD and OpenBSD.
+AC_CHECK_HEADERS(sys/types.h sys/socket.h sys/time.h time.h netinet/in.h arpa/inet.h errno.h fcntl.h netdb.h signal.h stdio.h stdlib.h string.h sys/stat.h sys/uio.h unistd.h sys/wait.h sys/un.h sys/param.h sys/select.h sys/sysctl.h poll.h sys/event.h strings.h sys/ioctl.h sys/filio.h sys/sockio.h pthread.h net/if_dl.h xti.h xti_inet.h netconfig.h netdir.h stropts.h, [], [], [
+#include <stdio.h>
+#if HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+#if HAVE_SYS_STAT_H
+# include <sys/stat.h>
+#endif
+#if STDC_HEADERS
+# include <stdlib.h>
+# include <stddef.h>
+#else
+# if HAVE_STDLIB_H
+#  include <stdlib.h>
+# endif
+#endif
+#if HAVE_STRING_H
+# if !STDC_HEADERS && HAVE_MEMORY_H
+#  include <memory.h>
+# endif
+# include <string.h>
+#endif
+#if HAVE_STRINGS_H
+# include <strings.h>
+#endif
+#if HAVE_INTTYPES_H
+# include <inttypes.h>
+#else
+# if HAVE_STDINT_H
+#  include <stdint.h>
+# endif
+#endif
+#if HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+#if HAVE_SYS_PARAM_H
+# include <sys/param.h>
+#endif])
 
 dnl ##################################################################
 dnl Checks for typedefs.
@@ -149,64 +189,79 @@ dnl We use our own AC_UNP_CHECK_TYPE macro, instead of AC_CHECK_TYPE,
 dnl to #include more headers.  Our macro is defined in "aclocal.m4".
 dnl
 AC_HEADER_TIME
-AC_UNP_CHECK_TYPE(uint8_t, unsigned char)
-AC_UNP_CHECK_TYPE(int16_t, short)
-AC_UNP_CHECK_TYPE(uint16_t, unsigned short)
-AC_UNP_CHECK_TYPE(int32_t, int)
-AC_UNP_CHECK_TYPE(uint32_t, unsigned int)
-AC_UNP_CHECK_TYPE(size_t, unsigned int)
-AC_UNP_CHECK_TYPE(ssize_t, int)
-AC_UNP_CHECK_TYPE(socklen_t, unsigned int)
+AC_UNP_CHECK_TYPE(uint8_t, unsigned char, 8-bit unsigned type)
+AC_UNP_CHECK_TYPE(int16_t, short, 16 bit signed type)
+AC_UNP_CHECK_TYPE(uint16_t, unsigned short, 16 bit unsigned type)
+AC_UNP_CHECK_TYPE(int32_t, int, 32 bit signed type)
+AC_UNP_CHECK_TYPE(uint32_t, unsigned int, 32 bit unsigned type)
+AC_UNP_CHECK_TYPE(size_t, unsigned int, unsigned integer type of the result of the sizeof operator)
+AC_UNP_CHECK_TYPE(ssize_t, int, a signed type appropriate for a count of bytes or an error indication)
+AC_UNP_CHECK_TYPE(socklen_t, unsigned int, a type appropriate for address, hostname, buffer, etc. lengths)
 dnl
 dnl The SA_FAMILY_T in the following is #defined later, as its definition
 dnl depends on whether socket address structures have a length field or not.
 dnl
-AC_UNP_CHECK_TYPE(sa_family_t, SA_FAMILY_T)
+AC_UNP_CHECK_TYPE(sa_family_t, SA_FAMILY_T, the type of the sa_family struct member)
 
 dnl We also have our own macro to check for XTI definitions, that can
 dnl be defined after #include of our "unpxti.h" header.
 dnl
-AC_UNPXTI_CHECK_TYPE(t_scalar_t, int32_t)
-AC_UNPXTI_CHECK_TYPE(t_uscalar_t, uint32_t)
+AC_UNPXTI_CHECK_TYPE(t_scalar_t, int32_t, scalar type)
+AC_UNPXTI_CHECK_TYPE(t_uscalar_t, uint32_t, unsigned scalar type)
 
 dnl ##################################################################
 dnl Check if sockaddr{} has sa_len member.
 dnl
-AC_CACHE_CHECK(if sockaddr{} has sa_len member, ac_cv_sockaddr_has_sa_len,
-	AC_TRY_COMPILE([
-#		include <sys/types.h>
-#		include <sys/socket.h>],
-		[unsigned int i = sizeof(((struct sockaddr *)0)->sa_len)],
-	ac_cv_sockaddr_has_sa_len=yes,
-	ac_cv_sockaddr_has_sa_len=no))
-if test $ac_cv_sockaddr_has_sa_len = yes ; then
-	AC_DEFINE(HAVE_SOCKADDR_SA_LEN)
-fi
+AC_CHECK_MEMBER([struct sockaddr.sa_len],
+ AC_DEFINE(HAVE_SOCKADDR_SA_LEN, 1, define if socket address structures have length fields),,[
+#include <sys/types.h>
+#include <sys/socket.h>])
 
 dnl Now we can complete the definition for sa_family_t, if needed.
 dnl The size of this datatype depends whether socket address structures
 dnl have a length field or not.
 dnl
 if test $ac_cv_type_sa_family_t = no ; then
-   if test $ac_cv_sockaddr_has_sa_len = yes ; then
-      AC_DEFINE(SA_FAMILY_T, uint8_t)
+   if test $ac_cv_member_struct_sockaddr_sa_len = yes ; then
+      AC_DEFINE(SA_FAMILY_T, uint8_t, the size of the sa_family field in a socket address structure)
    else
       AC_DEFINE(SA_FAMILY_T, uint16_t)
    fi
 fi
 
+dnl
+dnl Check for sockaddr_storage.
+dnl If it's present, check for ss_family.
+dnl If ss_family isn't there, check for __ss_family and
+dnl  #define ss_family __ss_family if so.
+dnl If neither is there, I don't know what to do.
+dnl
+AC_CHECK_TYPES([struct sockaddr_storage],
+  AC_CHECK_MEMBER([struct sockaddr_storage.ss_family],,
+   AC_CHECK_MEMBER([struct sockaddr_storage.__ss_family],
+    AC_DEFINE([ss_family],[__ss_family],[define to __ss_family if sockaddr_storage has that instead of ss_family]),
+    AC_MSG_ERROR([cannot find ss_family in sockaddr_storage]),[
+#include <sys/types.h>
+#include <sys/socket.h>]),[
+#include <sys/types.h>
+#include <sys/socket.h>]),,[
+#include <sys/types.h>
+#include <sys/socket.h>])
+
 dnl Check if msghdr{} has msg_control member.
 dnl
-AC_CACHE_CHECK(if msghdr{} has msg_control member, ac_cv_msghdr_has_msg_control,
-	AC_TRY_COMPILE([
-#		include <sys/types.h>
-#		include <sys/socket.h>],
-		[unsigned int i = sizeof(((struct msghdr *)0)->msg_control)],
-	ac_cv_msghdr_has_msg_control=yes,
-	ac_cv_msghdr_has_msg_control=no))
-if test $ac_cv_msghdr_has_msg_control = yes ; then
-	AC_DEFINE(HAVE_MSGHDR_MSG_CONTROL)
-fi
+AC_CHECK_MEMBER([struct msghdr.msg_control],
+ AC_DEFINE(HAVE_MSGHDR_MSG_CONTROL, 1, define if struct msghdr contains the msg_control member),,[
+#include <sys/types.h>
+#include <sys/socket.h>])
+
+dnl
+dnl Check for ifr_mtu in ifreq - some systems have SIOCGIFMTU
+dnl but don't have ifr_mtu!!
+AC_CHECK_MEMBERS([struct ifreq.ifr_mtu],,,
+[#include <sys/types.h>
+#include <sys/socket.h>
+#include <net/if.h>])
 
 dnl ##################################################################
 dnl Check for function prototypes in headers.
@@ -220,69 +275,81 @@ AC_CHECK_FUNC_PROTO(hstrerror, netdb.h)
 AC_CHECK_FUNC_PROTO(if_nametoindex, net/if.h)
 AC_CHECK_FUNC_PROTO(inet_aton, arpa/inet.h)
 AC_CHECK_FUNC_PROTO(inet_pton, arpa/inet.h)
-AC_CHECK_FUNC_PROTO(isfdtype, sys/stat.h)
 AC_CHECK_FUNC_PROTO(pselect, sys/select.h)
 AC_CHECK_FUNC_PROTO(snprintf, stdio.h)
 AC_CHECK_FUNC_PROTO(sockatmark, sys/socket.h)
+dnl
+dnl autoheader doesn't know how to handle the above, so we have
+dnl to help it out.
+AH_TEMPLATE(HAVE_GETADDRINFO_PROTO, define if getaddrinfo prototype is in <netdb.h>)
+AH_TEMPLATE(HAVE_GETNAMEINFO_PROTO, define if getnameinfo prototype is in <netdb.h>)
+AH_TEMPLATE(HAVE_GETHOSTNAME_PROTO, define if gethostname prototype is in <unistd.h>)
+AH_TEMPLATE(HAVE_GETRUSAGE_PROTO, define if getrusage prototype is in <sys/resource.h>)
+AH_TEMPLATE(HAVE_HSTRERROR_PROTO, define if hstrerror prototype is in <netdb.h>)
+AH_TEMPLATE(HAVE_IF_NAMETOINDEX_PROTO, define if if_nametoindex prototype is in <net/if.h>)
+AH_TEMPLATE(HAVE_INET_ATON_PROTO, define if inet_aton prototype is in <arpa/inet.h>)
+AH_TEMPLATE(HAVE_INET_PTON_PROTO, define if inet_pton prototype is in <arpa/inet.h>)
+AH_TEMPLATE(HAVE_PSELECT_PROTO, define if pselect prototype is in <sys/stat.h>)
+AH_TEMPLATE(HAVE_SNPRINTF_PROTO, define if snprintf prototype is in <stdio.h>)
+AH_TEMPLATE(HAVE_SOCKATMARK_PROTO, define if sockatmark prototype is in <sys/socket.h>)
 
 dnl ##################################################################
 dnl Check for structure definitions.
 dnl
-AC_CACHE_CHECK(for addrinfo{}, ac_cv_have_addrinfo_struct,
-	AC_EGREP_HEADER(addrinfo, netdb.h,
-		ac_cv_have_addrinfo_struct=yes,
-		ac_cv_have_addrinfo_struct=no))
-if test $ac_cv_have_addrinfo_struct = yes ; then
-	AC_DEFINE(HAVE_ADDRINFO_STRUCT)
-fi
+AC_CHECK_TYPE(struct addrinfo,
+ AC_DEFINE(HAVE_ADDRINFO_STRUCT, 1, Define to 1 if <netdb.h> defines struct addrinfo),,[
+#include <netdb.h>])
 
 dnl
-AC_CACHE_CHECK(for if_nameindex{}, ac_cv_have_if_nameindex_struct,
-	AC_EGREP_HEADER(if_nameindex, net/if.h,
-		ac_cv_have_if_nameindex_struct=yes,
-		ac_cv_have_if_nameindex_struct=no))
-if test $ac_cv_have_if_nameindex_struct = yes ; then
-	AC_DEFINE(HAVE_IF_NAMEINDEX_STRUCT)
-fi
+AC_CHECK_TYPE(struct if_nameindex,
+ AC_DEFINE(HAVE_IF_NAMEINDEX_STRUCT, 1, Define to 1 if <net/if.h> defines struct if_nameindex),,[
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <net/if.h>])
 
 dnl
-AC_CACHE_CHECK(for sockaddr_dl{}, ac_cv_have_sockaddr_dl_struct,
-	AC_EGREP_HEADER(sockaddr_dl, net/if_dl.h,
-		ac_cv_have_sockaddr_dl_struct=yes,
-		ac_cv_have_sockaddr_dl_struct=no))
-if test $ac_cv_have_sockaddr_dl_struct = yes ; then
-	AC_DEFINE(HAVE_SOCKADDR_DL_STRUCT)
-fi
+AC_CHECK_TYPE([struct sockaddr_dl],
+ AC_DEFINE(HAVE_SOCKADDR_DL_STRUCT, 1, Define to 1 if <net/if_dl.h> defines struct sockaddr_dl),,[
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <net/if_dl.h>])
 
-dnl
-AC_CACHE_CHECK(for timespec{}, ac_cv_have_timespec_struct,
-	AC_EGREP_HEADER(timespec, time.h,
-		ac_cv_have_timespec_struct=yes,
-		ac_cv_have_timespec_struct=no))
-if test $ac_cv_have_timespec_struct = yes ; then
-	AC_DEFINE(HAVE_TIMESPEC_STRUCT)
-fi
+dnl  OpenBSD puts struct timespec in <sys/time.h> instead of <time.h>,
+dnl  thus this complex test.
+AC_CHECK_TYPE([struct timespec],
+ AC_DEFINE(HAVE_TIMESPEC_STRUCT, 1, Define to 1 if <time.h> or <sys/time.h> defines struct timespec),,[
+#if TIME_WITH_SYS_TIME
+#include <sys/time.h>
+#include <time.h>
+#else
+#if HAVE_SYS_TIME_H
+#include <sys/time.h>
+#else
+#include <time.h>
+#endif
+#endif
+])
 
 dnl ##################################################################
 dnl Check for XTI devices.
 dnl
 AC_MSG_CHECKING(for /dev/tcp)
 if test -r /dev/tcp ; then
-	AC_DEFINE(HAVE_DEV_TCP)
+	AC_DEFINE(HAVE_DEV_TCP, 1, Define to 1 if the /dev/tcp device exists)
 	AC_MSG_RESULT(yes)
 else
 	AC_MSG_RESULT(no)
 
 	AC_MSG_CHECKING(for /dev/xti/tcp)
 	if test -r /dev/xti/tcp ; then
-		AC_DEFINE(HAVE_DEV_XTI_TCP)
+		AC_DEFINE(HAVE_DEV_XTI_TCP, 1, Define to 1 if the /dev/xti/tcp device exists)
 		AC_MSG_RESULT(yes)
 	else
 		AC_MSG_RESULT(no)
 
 		AC_MSG_CHECKING(for /dev/streams/xtiso/tcp)
 		if test -r /dev/streams/xtiso/tcp ; then
-			AC_DEFINE(HAVE_DEV_STREAMS_XTISO_TCP)
+			AC_DEFINE(HAVE_DEV_STREAMS_XTISO_TCP, 1, Define to 1 if the /dev/streams/xtiso/tcp device exists)
 			AC_MSG_RESULT(yes)
 		else
 			AC_MSG_RESULT(no)
@@ -303,7 +370,9 @@ AC_CHECK_FUNCS(hstrerror)
 AC_CHECK_FUNCS(if_nametoindex)
 AC_CHECK_FUNCS(inet_aton)
 AC_CHECK_FUNCS(inet_pton)
-AC_CHECK_FUNCS(isfdtype)
+AC_CHECK_FUNCS(inet6_rth_init)
+AC_CHECK_FUNCS(kqueue kevent)
+AC_CHECK_FUNCS(mkstemp)
 AC_CHECK_FUNCS(poll)
 AC_CHECK_FUNCS(pselect)
 AC_CHECK_FUNCS(snprintf)
@@ -336,8 +405,8 @@ AC_CACHE_VAL(ac_cv_ipv4,
 	ac_cv_ipv4=no))
 AC_MSG_RESULT($ac_cv_ipv4)
 if test $ac_cv_ipv4 = yes ; then
-	AC_DEFINE(IPV4)
-	AC_DEFINE(IPv4)
+	AC_DEFINE(IPV4, 1, Define to 1 if the system supports IPv4)
+	AC_DEFINE(IPv4, 1, Define to 1 if the system supports IPv4)
 fi
 
 dnl Let's see if the system really supports IPv6.
@@ -363,8 +432,8 @@ AC_CACHE_VAL(ac_cv_ipv6,
 	ac_cv_ipv6=no))
 AC_MSG_RESULT($ac_cv_ipv6)
 if test $ac_cv_ipv6 = yes ; then
-	AC_DEFINE(IPV6)
-	AC_DEFINE(IPv6)
+	AC_DEFINE(IPV6, 1, Define to 1 if the system supports IPv6)
+	AC_DEFINE(IPv6, 1, Define to 1 if the system supports IPv6)
 fi
 
 dnl Let's see if the system really supports Unix domain sockets.
@@ -390,8 +459,8 @@ AC_CACHE_VAL(ac_cv_unixdomain,
 	ac_cv_unixdomain=no))
 AC_MSG_RESULT($ac_cv_unixdomain)
 if test $ac_cv_unixdomain = yes ; then
-	AC_DEFINE(UNIXDOMAIN)
-	AC_DEFINE(UNIXdomain)
+	AC_DEFINE(UNIXDOMAIN, 1, Define to 1 if the system supports UNIX domain sockets)
+	AC_DEFINE(UNIXdomain, 1, Define to 1 if the system supports UNIX domain sockets)
 fi
 
 dnl Let's see if the system really supports multicasting.
@@ -420,7 +489,7 @@ AC_CACHE_VAL(ac_cv_multicast,
 	ac_cv_multicast=no))
 AC_MSG_RESULT($ac_cv_multicast)
 if test $ac_cv_multicast = yes ; then
-	AC_DEFINE(MCAST)
+	AC_DEFINE(MCAST, 1, Define to 1 if the system supports IP Multicast)
 fi
 
 dnl ##################################################################
@@ -444,10 +513,8 @@ fi
 if test "$ac_cv_func_if_nametoindex" = no ; then
    LIB_OBJS="$LIB_OBJS if_nametoindex.o if_indextoname.o if_nameindex.o"
 fi
-if test "$ac_cv_func_isfdtype" = no ; then
-   LIB_OBJS="$LIB_OBJS isfdtype.o"
-fi
 if test "$ac_cv_multicast" = yes ; then
+   LIB_OBJS="$LIB_OBJS family_to_level.o"
    LIB_OBJS="$LIB_OBJS mcast_leave.o mcast_join.o"
    LIB_OBJS="$LIB_OBJS mcast_get_if.o mcast_get_loop.o mcast_get_ttl.o"
    LIB_OBJS="$LIB_OBJS mcast_set_if.o mcast_set_loop.o mcast_set_ttl.o"
@@ -521,9 +588,15 @@ dnl ##################################################################
 dnl Build the list of object files to build from the source files in
 dnl the libgai/ directory (getaddrinfo() and friends).
 dnl
+dnl If the system has a getaddrinfo implementation, then
+dnl there should be nothing here.
+if test "$ac_cv_func_getaddrinfo" = no ; then
 LIBGAI_OBJS="getaddrinfo.o getnameinfo.o freeaddrinfo.o gai_strerror.o"
 LIBGAI_OBJS="$LIBGAI_OBJS ga_aistruct.o ga_clone.o ga_echeck.o ga_nsearch.o"
 LIBGAI_OBJS="$LIBGAI_OBJS ga_port.o ga_serv.o ga_unix.o gn_ipv46.o"
+else
+LIBGAI_OBJS=""
+fi
 
 dnl ##################################################################
 dnl Build the list of object files to build from the source files in
@@ -605,6 +678,9 @@ dnl catch any function call where the function has not been prototyped.
 dnl
 if test "$ac_cv_prog_gcc" = yes; then
    CFLAGS="$CFLAGS -Wall"
+   dnl
+   dnl These warnings are useful during development, but not to deploy.
+   dnl CFLAGS="$CFLAGS -W -Wall -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith -Wreturn-type -Wcast-qual -Wwrite-strings -Wswitch -Wshadow -Wno-format-extra-args"
 fi
 
 dnl Some system-specific stuff ...
@@ -612,7 +688,6 @@ dnl Some operating systems require additional flags in order to get all
 dnl the definitions that we're looking for in some system headers.
 case "$host_os" in
 *aix*)		CFLAGS="$CFLAGS -D_ALL_SOURCE" ;;
-*hpux*)		CFLAGS="$CFLAGS -D_HPUX_SOURCE" ;;
 *osf*)		CFLAGS="$CFLAGS -D_SOCKADDR_LEN" ;;
 *solaris*)	if test "$ac_cv_prog_gcc" = yes; then
 		   CFLAGS="$CFLAGS -D__EXTENSIONS__"
@@ -628,7 +703,7 @@ AC_OUTPUT(Makefile Make.defines)
 
 dnl
 dnl If a directory exists whose name equals the host
-dnl (e.g., sparc-sun-solaris2.5.1), then save the three files that we
+dnl (e.g., sparc-sun-solaris2.5.1), then save the five files that we
 dnl create in that directory also.
 dnl Quick and dirty to be able to NFS mount this directory on different
 dnl systems and move quickly between the systems, without having to

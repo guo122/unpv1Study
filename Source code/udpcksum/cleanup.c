@@ -6,7 +6,6 @@ cleanup(int signo)
 {
 	struct pcap_stat	stat;
 
-	fflush(stdout);
 	putc('\n', stdout);
 
 	if (verbose) {

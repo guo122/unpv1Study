@@ -8,4 +8,4 @@ clean:
 	rm -f $(CLEANFILES)
  
 distclean:
-	rm -f $(CLEANFILES) config.cache config.log config.status
+	rm -f $(CLEANFILES) config.cache config.log config.status config.h Make.defines Makefile

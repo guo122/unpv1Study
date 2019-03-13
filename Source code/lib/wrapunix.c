@@ -90,11 +90,21 @@ Malloc(size_t size)
 	return(ptr);
 }
 
-void
-Mktemp(char *template)
+int
+Mkstemp(char *template)
 {
+	int i;
+
+#ifdef HAVE_MKSTEMP
+	if ((i = mkstemp(template)) < 0)
+		err_quit("mkstemp error");
+#else
 	if (mktemp(template) == NULL || template[0] == 0)
 		err_quit("mktemp error");
+	i = Open(template, O_CREAT | O_WRONLY, FILE_MODE);
+#endif
+
+	return i;
 }
 
 #include	<sys/mman.h>

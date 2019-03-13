@@ -3,11 +3,11 @@
 
 			/* DefinE global variables */
 struct sockaddr	*dest, *local;
+struct sockaddr_in locallookup;
 socklen_t		destlen, locallen;
 
 int		datalink;		/* from pcap_datalink(), in <net/bpf.h> */
 char   *device;			/* pcap device */
-int		fddipad;		/* HACK; for libpcap if FDDI defined */
 pcap_t *pd;				/* packet capture struct pointer */
 int		rawfd;			/* raw socket to write on */
 int		snaplen = 200;	/* amount of data to capture */
@@ -19,23 +19,9 @@ static void	usage(const char *);
 int
 main(int argc, char *argv[])
 {
-	int				c, on=1;
+	int				c, lopt=0;
 	char			*ptr, localname[1024], *localport;
 	struct addrinfo	*aip;
-
-	if (argc < 2)
-		usage("");
-
-	/*
-	 * Need local IP address for source IP address for UDP datagrams.
-	 * Can't specify 0 and let IP choose, as we need to know it for
-	 * the pseudo-header to calculate the UDP checksum.
-	 * Both localname and localport can be overridden by -l option.
-	 */
-
-	if (gethostname(localname, sizeof(localname)) < 0)
-		err_sys("gethostname error");
-	localport = LOCALPORT;
 /* end main1 */
 
 /* include main2 */
@@ -51,13 +37,14 @@ main(int argc, char *argv[])
 			device = optarg;			/* pcap device */
 			break;
 
-		case 'l':			/* local IP address and port#: a.b.c.d.p */
+		case 'l':			/* local IP address and port #: a.b.c.d.p */
 			if ( (ptr = strrchr(optarg, '.')) == NULL)
 				usage("invalid -l option");
 
 			*ptr++ = 0;					/* null replaces final period */
 			localport = ptr;			/* service name or port number */
 			strncpy(localname, optarg, sizeof(localname));
+			lopt = 1;
 			break;
 
 		case 'v':
@@ -74,28 +61,41 @@ main(int argc, char *argv[])
 		usage("missing <host> and/or <serv>");
 
 		/* 4convert destination name and service */
-	aip = host_serv(argv[optind], argv[optind+1], AF_INET, SOCK_DGRAM);
+	aip = Host_serv(argv[optind], argv[optind+1], AF_INET, SOCK_DGRAM);
 	dest = aip->ai_addr;		/* don't freeaddrinfo() */
 	destlen = aip->ai_addrlen;
 
-		/* 4convert local name and service */
-	aip = host_serv(localname, localport, AF_INET, SOCK_DGRAM);
-	local = aip->ai_addr;		/* don't freeaddrinfo() */
-	locallen = aip->ai_addrlen;
-
 	/*
-	 * Need a raw socket to write our own IP datagrams to.
-	 * Process must have superuser privileges to create this socket.
-	 * Also must set IP_HDRINCL so we can write our own IP headers.
+	 * Need local IP address for source IP address for UDP datagrams.
+	 * Can't specify 0 and let IP choose, as we need to know it for
+	 * the pseudoheader to calculate the UDP checksum.
+	 * If -l option supplied, then use those values; otherwise,
+	 * connect a UDP socket to the destination to determine the right
+	 * source address.
 	 */
+	if (lopt) {
+		    /* 4convert local name and service */
+	    aip = Host_serv(localname, localport, AF_INET, SOCK_DGRAM);
+	    local = aip->ai_addr;		/* don't freeaddrinfo() */
+	    locallen = aip->ai_addrlen;
+	} else {
+		int s;
+		s = Socket(AF_INET, SOCK_DGRAM, 0);
+		Connect(s, dest, destlen);
+		/* kernel chooses correct local address for dest */
+		locallen = sizeof(locallookup);
+	    local = (struct sockaddr *)&locallookup;
+		Getsockname(s, local, &locallen);
+		if (locallookup.sin_addr.s_addr == htonl(INADDR_ANY))
+			err_quit("Can't determine local address - use -l\n");
+		close(s);
+	}
 
-	rawfd = Socket(dest->sa_family, SOCK_RAW, 0);
-
-	Setsockopt(rawfd, IPPROTO_IP, IP_HDRINCL, &on, sizeof(on));
+	open_output();		/* open output, either raw socket or libnet */
 
 	open_pcap();		/* open packet capture device */
 
-	setuid(getuid());	/* don't need superuser privileges any more */
+	setuid(getuid());	/* don't need superuser privileges anymore */
 
 	Signal(SIGTERM, cleanup);
 	Signal(SIGINT, cleanup);
@@ -111,8 +111,8 @@ static void
 usage(const char *msg)
 {
 	err_msg(
-"usage: testudp [ options ] <host> <serv>\n"
-"options: -0    send UDP datagram with checksum set to 0"
+"usage: udpcksum [ options ] <host> <serv>\n"
+"options: -0    send UDP datagram with checksum set to 0\n"
 "         -i s  packet capture device\n"
 "         -l a.b.c.d.p  local IP=a.b.c.d, local port=p\n"
 "         -v    verbose output"

@@ -11,6 +11,7 @@ send_v4(void)
 	icmp->icmp_code = 0;
 	icmp->icmp_id = pid;
 	icmp->icmp_seq = nsent++;
+	memset(icmp->icmp_data, 0xa5, datalen);	/* fill with pattern */
 	Gettimeofday((struct timeval *) icmp->icmp_data, NULL);
 
 	len = 8 + datalen;		/* checksum ICMP header and data */

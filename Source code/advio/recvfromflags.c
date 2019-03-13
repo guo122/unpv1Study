@@ -2,13 +2,9 @@
 #include	"unp.h"
 #include	<sys/param.h>		/* ALIGN macro for CMSG_NXTHDR() macro */
 
-#ifdef	HAVE_SOCKADDR_DL_STRUCT
-# include	<net/if_dl.h>
-#endif
-
 ssize_t
 recvfrom_flags(int fd, void *ptr, size_t nbytes, int *flagsp,
-			   SA *sa, socklen_t *salenptr, struct in_pktinfo *pktp)
+			   SA *sa, socklen_t *salenptr, struct unp_in_pktinfo *pktp)
 {
 	struct msghdr	msg;
 	struct iovec	iov[1];
@@ -19,7 +15,7 @@ recvfrom_flags(int fd, void *ptr, size_t nbytes, int *flagsp,
 	union {
 	  struct cmsghdr	cm;
 	  char				control[CMSG_SPACE(sizeof(struct in_addr)) +
-								CMSG_SPACE(sizeof(struct in_pktinfo))];
+								CMSG_SPACE(sizeof(struct unp_in_pktinfo))];
 	} control_un;
 
 	msg.msg_control = control_un.control;
@@ -41,7 +37,7 @@ recvfrom_flags(int fd, void *ptr, size_t nbytes, int *flagsp,
 
 	*salenptr = msg.msg_namelen;	/* pass back results */
 	if (pktp)
-		bzero(pktp, sizeof(struct in_pktinfo));	/* 0.0.0.0, i/f = 0 */
+		bzero(pktp, sizeof(struct unp_in_pktinfo));	/* 0.0.0.0, i/f = 0 */
 /* end recvfrom_flags1 */
 
 /* include recvfrom_flags2 */
@@ -88,7 +84,7 @@ recvfrom_flags(int fd, void *ptr, size_t nbytes, int *flagsp,
 
 ssize_t
 Recvfrom_flags(int fd, void *ptr, size_t nbytes, int *flagsp,
-			   SA *sa, socklen_t *salenptr, struct in_pktinfo *pktp)
+			   SA *sa, socklen_t *salenptr, struct unp_in_pktinfo *pktp)
 {
 	ssize_t		n;
 

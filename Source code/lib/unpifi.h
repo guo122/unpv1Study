@@ -11,9 +11,11 @@
 #define	IFI_HADDR	 8			/* allow for 64-bit EUI-64 in future */
 
 struct ifi_info {
-  char    ifi_name[IFI_NAME];	/* interface name, null terminated */
+  char    ifi_name[IFI_NAME];	/* interface name, null-terminated */
+  short   ifi_index;			/* interface index */
+  short   ifi_mtu;				/* interface MTU */
   u_char  ifi_haddr[IFI_HADDR];	/* hardware address */
-  u_short ifi_hlen;				/* #bytes in hardware address: 0, 6, 8 */
+  u_short ifi_hlen;				/* # bytes in hardware address: 0, 6, 8 */
   short   ifi_flags;			/* IFF_xxx constants from <net/if.h> */
   short   ifi_myflags;			/* our own IFI_xxx flags */
   struct sockaddr  *ifi_addr;	/* primary address */

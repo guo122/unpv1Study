@@ -1,6 +1,6 @@
 #include	"unp.h"
 
-#define	MAXN	16384		/* max #bytes to request from server */
+#define	MAXN	16384		/* max # bytes to request from server */
 
 int
 main(int argc, char **argv)

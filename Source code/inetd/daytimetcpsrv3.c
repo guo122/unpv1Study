@@ -11,8 +11,8 @@ main(int argc, char **argv)
 
 	daemon_inetd(argv[0], 0);
 
-	cliaddr = Malloc(MAXSOCKADDR);
-	len = MAXSOCKADDR;
+	cliaddr = Malloc(sizeof(struct sockaddr_storage));
+	len = sizeof(struct sockaddr_storage);
 	Getpeername(0, cliaddr, &len);
 	err_msg("connection from %s", Sock_ntop(cliaddr, len));
 

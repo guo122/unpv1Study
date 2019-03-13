@@ -9,7 +9,7 @@ struct file {
   char	*f_host;			/* hostname or IP address */
   int    f_fd;				/* descriptor */
   int	 f_flags;			/* F_xxx below */
-  int	 f_tid;				/* thread ID */
+  pthread_t	 f_tid;			/* thread ID */
 } file[MAXFILES];
 #define	F_CONNECTING	1	/* connect() in progress */
 #define	F_READING		2	/* connect() complete; now reading */
@@ -61,14 +61,14 @@ main(int argc, char **argv)
 			if (i == nfiles)
 				err_quit("nlefttoconn = %d but nothing found", nlefttoconn);
 
+			file[i].f_flags = F_CONNECTING;
 			Pthread_create(&tid, NULL, &do_get_read, &file[i]);
 			file[i].f_tid = tid;
-			file[i].f_flags = F_CONNECTING;
 			nconn++;
 			nlefttoconn--;
 		}
 
-			/* 4Wait for one of the threads to terminate */
+			/* 4Wait for thread to terminate */
 		Pthread_mutex_lock(&ndone_mutex);
 		while (ndone == 0)
 			Pthread_cond_wait(&ndone_cond, &ndone_mutex);

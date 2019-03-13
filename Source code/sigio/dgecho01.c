@@ -4,7 +4,7 @@
 static int		sockfd;
 
 #define	QSIZE	   8		/* size of input queue */
-#define	MAXDG	4096		/* maximum datagram size */
+#define	MAXDG	4096		/* max datagram size */
 
 typedef struct {
   void		*dg_data;		/* ptr to actual datagram */
@@ -12,12 +12,12 @@ typedef struct {
   struct sockaddr  *dg_sa;	/* ptr to sockaddr{} w/client's address */
   socklen_t	dg_salen;		/* length of sockaddr{} */
 } DG;
-static DG	dg[QSIZE];			/* the queue of datagrams to process */
+static DG	dg[QSIZE];			/* queue of datagrams to process */
 static long	cntread[QSIZE+1];	/* diagnostic counter */
 
 static int	iget;		/* next one for main loop to process */
 static int	iput;		/* next one for signal handler to read into */
-static int	nqueue;		/* #on queue for main loop to process */
+static int	nqueue;		/* # on queue for main loop to process */
 static socklen_t clilen;/* max length of sockaddr{} */
 
 static void	sig_io(int);
@@ -51,14 +51,14 @@ dg_echo(int sockfd_arg, SA *pcliaddr, socklen_t clilen_arg)
 	Sigemptyset(&zeromask);		/* init three signal sets */
 	Sigemptyset(&oldmask);
 	Sigemptyset(&newmask);
-	Sigaddset(&newmask, SIGIO);	/* the signal we want to block */
+	Sigaddset(&newmask, SIGIO);	/* signal we want to block */
 
 	Sigprocmask(SIG_BLOCK, &newmask, &oldmask);
 	for ( ; ; ) {
 		while (nqueue == 0)
-			sigsuspend(&zeromask);	/* wait for a datagram to process */
+			sigsuspend(&zeromask);	/* wait for datagram to process */
 
-			/* 4unblock SIGGIO */
+			/* 4unblock SIGIO */
 		Sigprocmask(SIG_SETMASK, &oldmask, NULL);
 
 		Sendto(sockfd, dg[iget].dg_data, dg[iget].dg_len, 0,
@@ -104,7 +104,7 @@ sig_io(int signo)
 			iput = 0;
 
 	}
-	cntread[nread]++;		/* histogram of #datagrams read per signal */
+	cntread[nread]++;		/* histogram of # datagrams read per signal */
 }
 /* end sig_io */
 

@@ -12,7 +12,7 @@ dg_echo(int sockfd, SA *pcliaddr, socklen_t clilen)
 
 	Signal(SIGINT, recvfrom_int);
 
-	n = 240 * 1024;
+	n = 220 * 1024;
 	Setsockopt(sockfd, SOL_SOCKET, SO_RCVBUF, &n, sizeof(n));
 
 	for ( ; ; ) {

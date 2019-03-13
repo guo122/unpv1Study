@@ -44,7 +44,7 @@ main(int argc, char **argv)
 		rset = masterset;
 		if (navail <= 0)
 			FD_CLR(listenfd, &rset);	/* turn off if no available children */
-		nsel = Select(maxfd, &rset, NULL, NULL, NULL);
+		nsel = Select(maxfd + 1, &rset, NULL, NULL, NULL);
 
 			/* 4check for new connections */
 		if (FD_ISSET(listenfd, &rset)) {

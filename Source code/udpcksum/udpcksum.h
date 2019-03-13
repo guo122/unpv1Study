@@ -10,7 +10,6 @@
 #include	<net/if.h>
 #include	<netinet/if_ether.h>
 
-#define	LOCALPORT	"39123"			/* source port (default) */
 #define	TTL_OUT		64				/* outgoing TTL */
 
 					/* declare global variables */
@@ -27,7 +26,9 @@ extern int		zerosum;
 					/* function prototypes */
 void			 cleanup(int);
 char			*next_pcap(int *);
+void			 open_output(void);
 void			 open_pcap(void);
+void			 send_dns_query(void);
 void			 test_udp(void);
 void			 udp_write(char *, int);
 struct udpiphdr *udp_read(void);

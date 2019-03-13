@@ -44,6 +44,7 @@ main(int argc, char **argv)
 				if (errno == EADDRINUSE) {
 					printf("EADDRINUSE: %s\n",
 						   Sock_ntop((SA *) sa, sizeof(*sa)));
+					Close(sockfd);
 					continue;
 				} else
 					err_sys("bind error for %s",
@@ -94,7 +95,7 @@ mydg_echo(int sockfd, SA *pcliaddr, socklen_t clilen, SA *myaddr)
 			   Sock_ntop(pcliaddr, len));
 		printf(", to %s\n", Sock_ntop(myaddr, clilen));
 
-		Sendto(sockfd, mesg, n, 0, pcliaddr, clilen);
+		Sendto(sockfd, mesg, n, 0, pcliaddr, len);
 	}
 }
 /* end mydg_echo */

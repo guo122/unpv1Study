@@ -20,6 +20,9 @@ sock_set_wild(struct sockaddr *sa, socklen_t salen)
 		break;
 	}
 #endif
+
+	default:
+		return;
 	}
 	sock_set_addr(sa, salen, wildptr);
     return;

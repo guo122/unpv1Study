@@ -9,10 +9,6 @@ str_echo(int sockfd)
 	fpin = Fdopen(sockfd, "r");
 	fpout = Fdopen(sockfd, "w");
 
-	for ( ; ; ) {
-		if (Fgets(line, MAXLINE, fpin) == NULL)
-			return;		/* connection closed by other end */
-
+	while (Fgets(line, MAXLINE, fpin) != NULL)
 		Fputs(line, fpout);
-	}
 }

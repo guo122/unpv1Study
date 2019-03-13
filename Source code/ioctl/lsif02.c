@@ -10,7 +10,7 @@ int
 main(int argc, char **argv)
 {
 	int					sockfd, len;
-	char				*ptr, buf[2048];
+	char				*ptr, buf[2048], addrstr[INET_ADDRSTRLEN];
 	struct ifconf		ifc;
 	struct ifreq		*ifr;
 	struct sockaddr_in	*sinptr;
@@ -36,16 +36,17 @@ main(int argc, char **argv)
 		case AF_INET:
 			sinptr = (struct sockaddr_in *) &ifr->ifr_addr;
 			printf("%s\t%s\n", ifr->ifr_name,
-				   Inet_ntop(AF_INET, &sinptr->sin_addr, NULL, 4));
+				   Inet_ntop(AF_INET, &sinptr->sin_addr, addrstr, sizeof(addrstr)));
 			break;
 
 #ifdef	AF_INET6
 		case AF_INET6: {
 			struct sockaddr_in6	*sin6ptr;
+			char addr6str[INET6_ADDRSTRLEN];
 
 			sin6ptr = (struct sockaddr_in6 *) &ifr->ifr_addr;
 			printf("%s\t%s\n", ifr->ifr_name,
-				   Inet_ntop(AF_INET6, &sin6ptr->sin6_addr, 16, NULL));
+				   Inet_ntop(AF_INET6, &sin6ptr->sin6_addr, addr6str, sizeof(addr6str)));
 			break;
 		}
 #endif

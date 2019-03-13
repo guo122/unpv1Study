@@ -13,6 +13,12 @@ tcpcli01:	tcpcli01.o
 tcpcli02:	tcpcli02.o str_cli_select02.o
 		${CC} ${CFLAGS} -o $@ tcpcli02.o str_cli_select02.o ${LIBS}
 
+tcpcli03:	tcpcli03.o str_cli_poll03.o
+		${CC} ${CFLAGS} -o $@ tcpcli03.o str_cli_poll03.o ${LIBS}
+
+tcpcli04:	tcpcli04.o str_cli_kqueue04.o
+		${CC} ${CFLAGS} -o $@ tcpcli04.o str_cli_kqueue04.o ${LIBS}
+
 tcpserv02:	tcpserv02.o str_echo_stdio02.o sig_chld_waitpid.o
 		${CC} ${CFLAGS} -o $@ tcpserv02.o str_echo_stdio02.o \
 			sig_chld_waitpid.o ${LIBS}

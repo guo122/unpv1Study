@@ -32,7 +32,7 @@ main(int argc, char **argv)
 
 		if ( (childpid = Fork()) == 0) {	/* child process */
 			Close(listenfd);	/* close listening socket */
-			web_child(connfd);	/* process the request */
+			web_child(connfd);	/* process request */
 			exit(0);
 		}
 		Close(connfd);			/* parent closes connected socket */

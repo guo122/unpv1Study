@@ -1,10 +1,12 @@
-unsigned short
-in_cksum(unsigned short *addr, int len)
+#include "unp.h"
+
+uint16_t
+in_cksum(uint16_t *addr, int len)
 {
 	int				nleft = len;
-	int				sum = 0;
-	unsigned short	*w = addr;
-	unsigned short	answer = 0;
+	uint32_t		sum = 0;
+	uint16_t		*w = addr;
+	uint16_t		answer = 0;
 
 	/*
 	 * Our algorithm is simple, using a 32 bit accumulator (sum), we add

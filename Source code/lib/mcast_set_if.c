@@ -32,25 +32,25 @@ doioctl:
 
 #ifdef	IPV6
 	case AF_INET6: {
-		u_int	index;
+		u_int	idx;
 
-		if ( (index = ifindex) == 0) {
+		if ( (idx = ifindex) == 0) {
 			if (ifname == NULL) {
 				errno = EINVAL;	/* must supply either index or name */
 				return(-1);
 			}
-			if ( (index = if_nametoindex(ifname)) == 0) {
+			if ( (idx = if_nametoindex(ifname)) == 0) {
 				errno = ENXIO;	/* i/f name not found */
 				return(-1);
 			}
 		}
 		return(setsockopt(sockfd, IPPROTO_IPV6, IPV6_MULTICAST_IF,
-						  &index, sizeof(index)));
+						  &idx, sizeof(idx)));
 	}
 #endif
 
 	default:
-		errno = EPROTONOSUPPORT;
+		errno = EAFNOSUPPORT;
 		return(-1);
 	}
 }

@@ -8,7 +8,7 @@ main(int argc, char **argv)
 	int					nready, client[FD_SETSIZE];
 	ssize_t				n;
 	fd_set				rset, allset;
-	char				line[MAXLINE];
+	char				buf[MAXLINE];
 	socklen_t			clilen;
 	struct sockaddr_in	cliaddr, servaddr;
 
@@ -67,13 +67,13 @@ main(int argc, char **argv)
 			if ( (sockfd = client[i]) < 0)
 				continue;
 			if (FD_ISSET(sockfd, &rset)) {
-				if ( (n = Readline(sockfd, line, MAXLINE)) == 0) {
+				if ( (n = Read(sockfd, buf, MAXLINE)) == 0) {
 						/*4connection closed by client */
 					Close(sockfd);
 					FD_CLR(sockfd, &allset);
 					client[i] = -1;
 				} else
-					Writen(sockfd, line, n);
+					Writen(sockfd, buf, n);
 
 				if (--nready <= 0)
 					break;				/* no more readable descriptors */

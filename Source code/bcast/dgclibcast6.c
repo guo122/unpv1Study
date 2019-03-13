@@ -35,7 +35,7 @@ dg_cli(FILE *fp, int sockfd, const SA *pservaddr, socklen_t servlen)
 				if (errno == EINTR)
 					continue;
 				else
-					err_sys("pselect error");
+					err_sys("select error");
 			}
 
 			if (FD_ISSET(sockfd, &rset)) {
@@ -43,7 +43,7 @@ dg_cli(FILE *fp, int sockfd, const SA *pservaddr, socklen_t servlen)
 				n = Recvfrom(sockfd, recvline, MAXLINE, 0, preply_addr, &len);
 				recvline[n] = 0;	/* null terminate */
 				printf("from %s: %s",
-						Sock_ntop_host(preply_addr, servlen), recvline);
+						Sock_ntop_host(preply_addr, len), recvline);
 			}
 
 			if (FD_ISSET(pipefd[0], &rset)) {
@@ -52,11 +52,12 @@ dg_cli(FILE *fp, int sockfd, const SA *pservaddr, socklen_t servlen)
 			}
 		}
 	}
+	free(preply_addr);
 }
 
 static void
 recvfrom_alarm(int signo)
 {
-	Write(pipefd[1], "", 1);	/* write 1 null byte to pipe */
+	Write(pipefd[1], "", 1);	/* write one null byte to pipe */
 	return;
 }

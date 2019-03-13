@@ -1,9 +1,9 @@
 #include	"ping.h"
 
-struct proto	proto_v4 = { proc_v4, send_v4, NULL, NULL, 0, IPPROTO_ICMP };
+struct proto	proto_v4 = { proc_v4, send_v4, NULL, NULL, NULL, 0, IPPROTO_ICMP };
 
 #ifdef	IPV6
-struct proto	proto_v6 = { proc_v6, send_v6, NULL, NULL, 0, IPPROTO_ICMPV6 };
+struct proto	proto_v6 = { proc_v6, send_v6, init_v6, NULL, NULL, 0, IPPROTO_ICMPV6 };
 #endif
 
 int	datalen = 56;		/* data that goes with ICMP echo request */
@@ -13,6 +13,7 @@ main(int argc, char **argv)
 {
 	int				c;
 	struct addrinfo	*ai;
+	char *h;
 
 	opterr = 0;		/* don't want getopt() writing to stderr */
 	while ( (c = getopt(argc, argv, "v")) != -1) {
@@ -30,13 +31,15 @@ main(int argc, char **argv)
 		err_quit("usage: ping [ -v ] <hostname>");
 	host = argv[optind];
 
-	pid = getpid();
+	pid = getpid() & 0xffff;	/* ICMP ID field is 16 bits */
 	Signal(SIGALRM, sig_alrm);
 
 	ai = Host_serv(host, NULL, 0, 0);
 
-	printf("PING %s (%s): %d data bytes\n", ai->ai_canonname,
-		   Sock_ntop_host(ai->ai_addr, ai->ai_addrlen), datalen);
+	h = Sock_ntop_host(ai->ai_addr, ai->ai_addrlen);
+	printf("PING %s (%s): %d data bytes\n",
+			ai->ai_canonname ? ai->ai_canonname : h,
+			h, datalen);
 
 		/* 4initialize according to protocol */
 	if (ai->ai_family == AF_INET) {

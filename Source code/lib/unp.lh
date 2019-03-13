@@ -138,7 +138,7 @@ struct in_pktinfo {## 86 ##src/lib/unp.h##
 #endif##105 ##src/lib/unp.h##
 
 /* Posix.1g renames "Unix domain" as "local IPC".##106 ##src/lib/unp.h##
-   But not all systems define AF_LOCAL and AF_LOCAL (yet). */##107 ##src/lib/unp.h##
+   But not all systems define AF_LOCAL and PF_LOCAL (yet). */##107 ##src/lib/unp.h##
 #ifndef AF_LOCAL##108 ##src/lib/unp.h##
 #define AF_LOCAL    AF_UNIX##109 ##src/lib/unp.h##
 #endif##110 ##src/lib/unp.h##

@@ -7,8 +7,8 @@ int		daemon_proc;		/* set nonzero by daemon_init() */
 
 static void	err_doit(int, int, const char *, va_list);
 
-/* Nonfatal error related to a system call.
- * Print a message and return. */
+/* Nonfatal error related to system call
+ * Print message and return */
 
 void
 err_ret(const char *fmt, ...)
@@ -21,8 +21,8 @@ err_ret(const char *fmt, ...)
 	return;
 }
 
-/* Fatal error related to a system call.
- * Print a message and terminate. */
+/* Fatal error related to system call
+ * Print message and terminate */
 
 void
 err_sys(const char *fmt, ...)
@@ -35,8 +35,8 @@ err_sys(const char *fmt, ...)
 	exit(1);
 }
 
-/* Fatal error related to a system call.
- * Print a message, dump core, and terminate. */
+/* Fatal error related to system call
+ * Print message, dump core, and terminate */
 
 void
 err_dump(const char *fmt, ...)
@@ -50,8 +50,8 @@ err_dump(const char *fmt, ...)
 	exit(1);		/* shouldn't get here */
 }
 
-/* Nonfatal error unrelated to a system call.
- * Print a message and return. */
+/* Nonfatal error unrelated to system call
+ * Print message and return */
 
 void
 err_msg(const char *fmt, ...)
@@ -64,8 +64,8 @@ err_msg(const char *fmt, ...)
 	return;
 }
 
-/* Fatal error unrelated to a system call.
- * Print a message and terminate. */
+/* Fatal error unrelated to system call
+ * Print message and terminate */
 
 void
 err_quit(const char *fmt, ...)
@@ -78,24 +78,24 @@ err_quit(const char *fmt, ...)
 	exit(1);
 }
 
-/* Print a message and return to caller.
- * Caller specifies "errnoflag" and "level". */
+/* Print message and return to caller
+ * Caller specifies "errnoflag" and "level" */
 
 static void
 err_doit(int errnoflag, int level, const char *fmt, va_list ap)
 {
 	int		errno_save, n;
-	char	buf[MAXLINE];
+	char	buf[MAXLINE + 1];
 
 	errno_save = errno;		/* value caller might want printed */
 #ifdef	HAVE_VSNPRINTF
-	vsnprintf(buf, sizeof(buf), fmt, ap);	/* this is safe */
+	vsnprintf(buf, MAXLINE, fmt, ap);	/* safe */
 #else
-	vsprintf(buf, fmt, ap);					/* this is not safe */
+	vsprintf(buf, fmt, ap);					/* not safe */
 #endif
 	n = strlen(buf);
 	if (errnoflag)
-		snprintf(buf+n, sizeof(buf)-n, ": %s", strerror(errno_save));
+		snprintf(buf + n, MAXLINE - n, ": %s", strerror(errno_save));
 	strcat(buf, "\n");
 
 	if (daemon_proc) {

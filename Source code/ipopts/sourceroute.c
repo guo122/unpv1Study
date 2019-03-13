@@ -8,18 +8,23 @@ static u_char	*lenptr;	/* pointer to length byte in SRR option */
 static int		ocnt;		/* count of # addresses */
 
 u_char *
-inet_srcrt_init(void)
+inet_srcrt_init(int type)
 {
-	optr = Malloc(44);	/* NOP, code, len, ptr, up to 10 addresses */
-	bzero(optr, 44);	/* guarantees EOLs at end */
+	optr = Malloc(44);		/* NOP, code, len, ptr, up to 10 addresses */
+	bzero(optr, 44);		/* guarantees EOLs at end */
 	ocnt = 0;
-	return(optr);		/* pointer for setsockopt() */
+	*optr++ = IPOPT_NOP;	/* NOP for alignment */
+	*optr++ = type ? IPOPT_SSRR : IPOPT_LSRR;
+	lenptr = optr++;		/* we fill in length later */
+	*optr++ = 4;			/* offset to first address */
+
+	return(optr - 4);		/* pointer for setsockopt() */
 }
 /* end inet_srcrt_init */
 
 /* include inet_srcrt_add */
 int
-inet_srcrt_add(char *hostptr, int type)
+inet_srcrt_add(char *hostptr)
 {
 	int					len;
 	struct addrinfo		*ai;
@@ -28,14 +33,7 @@ inet_srcrt_add(char *hostptr, int type)
 	if (ocnt > 9)
 		err_quit("too many source routes with: %s", hostptr);
 
-	if (ocnt == 0) {
-		*optr++ = IPOPT_NOP;	/* NOP for alignment */
-		*optr++ = type ? IPOPT_SSRR : IPOPT_LSRR;
-		lenptr = optr++;		/* we fill in the length later */
-		*optr++ = 4;			/* offset to first address */
-	}
-
-	ai = Host_serv(hostptr, "", AF_INET, 0);
+	ai = Host_serv(hostptr, NULL, AF_INET, 0);
 	sin = (struct sockaddr_in *) ai->ai_addr;
 	memcpy(optr, &sin->sin_addr, sizeof(struct in_addr));
 	freeaddrinfo(ai);
@@ -54,7 +52,7 @@ inet_srcrt_print(u_char *ptr, int len)
 {
 	u_char			c;
 	char			str[INET_ADDRSTRLEN];
-	struct in_addr	*hop1;
+	struct in_addr	hop1;
 
 	memcpy(&hop1, ptr, sizeof(struct in_addr));
 	ptr += sizeof(struct in_addr);
@@ -72,7 +70,7 @@ inet_srcrt_print(u_char *ptr, int len)
 	}
 	printf("%s ", Inet_ntop(AF_INET, &hop1, str, sizeof(str)));
 
-	len = *ptr++ - sizeof(struct in_addr);	/* subtract "hop1" */
+	len = *ptr++ - sizeof(struct in_addr);	/* subtract dest IP addr */
 	ptr++;		/* skip over pointer */
 	while (len > 0) {
 		printf("%s ", Inet_ntop(AF_INET, ptr, str, sizeof(str)));

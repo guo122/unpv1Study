@@ -73,7 +73,7 @@ udp_check(char *ptr, int len)
 		err_quit("len = %d, hlen = %d", len, hlen);
 /* *INDENT-ON* */
 
-	if ( (ip->ip_sum = in_cksum((u_short *) ip, hlen)) != 0)
+	if ( (ip->ip_sum = in_cksum((uint16_t *) ip, hlen)) != 0)
 		err_quit("ip checksum error");
 
 	if (ip->ip_p == IPPROTO_UDP) {

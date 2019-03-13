@@ -4,29 +4,38 @@ int
 main(int argc, char **argv)
 {
 	int					c, sockfd, len = 0;
-	u_char				*ptr;
+	u_char				*ptr = NULL;
 	struct addrinfo		*ai;
 
 	if (argc < 2)
 		err_quit("usage: tcpcli01 [ -[gG] <hostname> ... ] <hostname>");
 
-	ptr = inet_srcrt_init();
-
 	opterr = 0;		/* don't want getopt() writing to stderr */
-	while ( (c = getopt(argc, argv, "g:G:")) != -1) {
+	while ( (c = getopt(argc, argv, "gG")) != -1) {
 		switch (c) {
 		case 'g':			/* loose source route */
-			len = inet_srcrt_add(optarg, 0);
+			if (ptr)
+				err_quit("can't use both -g and -G");
+			ptr = inet_srcrt_init(0);
 			break;
 
 		case 'G':			/* strict source route */
-			len = inet_srcrt_add(optarg, 1);
+			if (ptr)
+				err_quit("can't use both -g and -G");
+			ptr = inet_srcrt_init(1);
 			break;
 
 		case '?':
 			err_quit("unrecognized option: %c", c);
 		}
 	}
+
+	if (ptr)
+		while (optind < argc-1)
+			len = inet_srcrt_add(argv[optind++]);
+	else
+		if (optind < argc-1)
+			err_quit("need -g or -G to specify route");
 
 	if (optind != argc-1)
 		err_quit("missing <hostname>");
@@ -35,8 +44,8 @@ main(int argc, char **argv)
 
 	sockfd = Socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol);
 
-	if (len > 0) {
-		len = inet_srcrt_add(argv[optind], 0);	/* dest at end */
+	if (ptr) {
+		len = inet_srcrt_add(argv[optind]);	/* dest at end */
 		Setsockopt(sockfd, IPPROTO_IP, IP_OPTIONS, ptr, len);
 		free(ptr);
 	}

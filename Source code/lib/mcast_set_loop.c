@@ -24,7 +24,7 @@ mcast_set_loop(int sockfd, int onoff)
 #endif
 
 	default:
-		errno = EPROTONOSUPPORT;
+		errno = EAFNOSUPPORT;
 		return(-1);
 	}
 }

@@ -7,7 +7,7 @@ main(int argc, char **argv)
 	char	buff[16384];
 
 	if (argc != 3)
-		err_quit("usage: tcpsend04 <host> <port#>");
+		err_quit("usage: tcpsend05 <host> <port#>");
 
 	sockfd = Tcp_connect(argv[1], argv[2]);
 

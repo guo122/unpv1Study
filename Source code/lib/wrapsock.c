@@ -72,15 +72,94 @@ Getsockopt(int fd, int level, int optname, void *optval, socklen_t *optlenptr)
 		err_sys("getsockopt error");
 }
 
+#ifdef	HAVE_INET6_RTH_INIT
 int
-Isfdtype(int fd, int fdtype)
+Inet6_rth_space(int type, int segments)
 {
-	int		n;
+	int ret;
+	
+	ret = inet6_rth_space(type, segments);
+	if (ret < 0)
+		err_quit("inet6_rth_space error");
 
-	if ( (n = isfdtype(fd, fdtype)) < 0)
-		err_sys("isfdtype error");
-	return(n);
+	return ret;
 }
+
+void *
+Inet6_rth_init(void *rthbuf, socklen_t rthlen, int type, int segments)
+{
+	void *ret;
+
+	ret = inet6_rth_init(rthbuf, rthlen, type, segments);
+	if (ret == NULL)
+		err_quit("inet6_rth_init error");
+
+	return ret;
+}
+
+void
+Inet6_rth_add(void *rthbuf, const struct in6_addr *addr)
+{
+	if (inet6_rth_add(rthbuf, addr) < 0)
+		err_quit("inet6_rth_add error");
+}
+
+void
+Inet6_rth_reverse(const void *in, void *out)
+{
+	if (inet6_rth_reverse(in, out) < 0)
+		err_quit("inet6_rth_reverse error");
+}
+
+int
+Inet6_rth_segments(const void *rthbuf)
+{
+	int ret;
+
+	ret = inet6_rth_segments(rthbuf);
+	if (ret < 0)
+		err_quit("inet6_rth_segments error");
+
+	return ret;
+}
+
+struct in6_addr *
+Inet6_rth_getaddr(const void *rthbuf, int idx)
+{
+	struct in6_addr *ret;
+
+	ret = inet6_rth_getaddr(rthbuf, idx);
+	if (ret == NULL)
+		err_quit("inet6_rth_getaddr error");
+
+	return ret;
+}
+#endif
+
+#ifdef HAVE_KQUEUE
+int
+Kqueue(void)
+{
+	int ret;
+
+	if ((ret = kqueue()) < 0)
+		err_sys("kqueue error");
+	return ret;
+}
+
+int
+Kevent(int kq, const struct kevent *changelist, int nchanges,
+       struct kevent *eventlist, int nevents, const struct timespec *timeout)
+{
+	int ret;
+
+	if ((ret = kevent(kq, changelist, nchanges,
+					  eventlist, nevents, timeout)) < 0)
+		err_sys("kevent error");
+	return ret;
+}
+#endif
+
 
 /* include Listen */
 void
@@ -155,7 +234,7 @@ Select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
 void
 Send(int fd, const void *ptr, size_t nbytes, int flags)
 {
-	if (send(fd, ptr, nbytes, flags) != nbytes)
+	if (send(fd, ptr, nbytes, flags) != (ssize_t)nbytes)
 		err_sys("send error");
 }
 
@@ -163,15 +242,15 @@ void
 Sendto(int fd, const void *ptr, size_t nbytes, int flags,
 	   const struct sockaddr *sa, socklen_t salen)
 {
-	if (sendto(fd, ptr, nbytes, flags, sa, salen) != nbytes)
+	if (sendto(fd, ptr, nbytes, flags, sa, salen) != (ssize_t)nbytes)
 		err_sys("sendto error");
 }
 
 void
 Sendmsg(int fd, const struct msghdr *msg, int flags)
 {
-	int			i;
-	ssize_t		nbytes;
+	unsigned int	i;
+	ssize_t			nbytes;
 
 	nbytes = 0;	/* must first figure out what return value should be */
 	for (i = 0; i < msg->msg_iovlen; i++)

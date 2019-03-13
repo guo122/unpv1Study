@@ -1,6 +1,7 @@
 /* include readline */
 #include	"unp.h"
 
+/* PAINFULLY SLOW VERSION -- example only */
 ssize_t
 readline(int fd, void *vptr, size_t maxlen)
 {
@@ -15,10 +16,8 @@ again:
 			if (c == '\n')
 				break;	/* newline is stored, like fgets() */
 		} else if (rc == 0) {
-			if (n == 1)
-				return(0);	/* EOF, no data read */
-			else
-				break;		/* EOF, some data was read */
+			*ptr = 0;
+			return(n - 1);	/* EOF, n - 1 bytes were read */
 		} else {
 			if (errno == EINTR)
 				goto again;

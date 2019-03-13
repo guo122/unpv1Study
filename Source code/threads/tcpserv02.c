@@ -6,6 +6,7 @@ int
 main(int argc, char **argv)
 {
 	int				listenfd, *iptr;
+	thread_t		tid;
 	socklen_t		addrlen, len;
 	struct sockaddr	*cliaddr;
 
@@ -22,8 +23,7 @@ main(int argc, char **argv)
 		len = addrlen;
 		iptr = Malloc(sizeof(int));
 		*iptr = Accept(listenfd, cliaddr, &len);
-
-		Pthread_create(NULL, NULL, &doit, iptr);
+		Pthread_create(&tid, NULL, &doit, iptr);
 	}
 }
 
@@ -37,6 +37,6 @@ doit(void *arg)
 
 	Pthread_detach(pthread_self());
 	str_echo(connfd);		/* same function as before */
-	Close(connfd);			/* we are done with connected socket */
+	Close(connfd);			/* done with connected socket */
 	return(NULL);
 }

@@ -13,7 +13,7 @@ int
 servopen(char *host, char *port)
 {
 	int					fd, newfd, i, on, pid;
-	char				*protocol;
+	const char			*protocol;
 	struct in_addr		inaddr;
 	struct servent		*sp;
 

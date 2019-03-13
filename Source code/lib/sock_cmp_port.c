@@ -1,7 +1,7 @@
 #include	"unp.h"
 
 #ifdef	HAVE_SOCKADDR_DL_STRUCT
-# include	<net/if_dl.h>
+#include	<net/if_dl.h>
 #endif
 
 int

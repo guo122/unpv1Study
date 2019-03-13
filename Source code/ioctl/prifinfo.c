@@ -13,7 +13,7 @@ main(int argc, char **argv)
 
 	if (strcmp(argv[1], "inet4") == 0)
 		family = AF_INET;
-#ifdef	IPV6
+#ifdef	IPv6
 	else if (strcmp(argv[1], "inet6") == 0)
 		family = AF_INET6;
 #endif
@@ -23,7 +23,10 @@ main(int argc, char **argv)
 
 	for (ifihead = ifi = Get_ifi_info(family, doaliases);
 		 ifi != NULL; ifi = ifi->ifi_next) {
-		printf("%s: <", ifi->ifi_name);
+		printf("%s: ", ifi->ifi_name);
+		if (ifi->ifi_index != 0)
+			printf("(%d) ", ifi->ifi_index);
+		printf("<");
 /* *INDENT-OFF* */
 		if (ifi->ifi_flags & IFF_UP)			printf("UP ");
 		if (ifi->ifi_flags & IFF_BROADCAST)		printf("BCAST ");
@@ -40,6 +43,8 @@ main(int argc, char **argv)
 			} while (--i > 0);
 			printf("\n");
 		}
+		if (ifi->ifi_mtu != 0)
+			printf("  MTU: %d\n", ifi->ifi_mtu);
 
 		if ( (sa = ifi->ifi_addr) != NULL)
 			printf("  IP addr: %s\n",

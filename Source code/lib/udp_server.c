@@ -20,12 +20,12 @@ udp_server(const char *host, const char *serv, socklen_t *addrlenp)
 	do {
 		sockfd = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
 		if (sockfd < 0)
-			continue;		/* error, try next one */
+			continue;		/* error - try next one */
 
 		if (bind(sockfd, res->ai_addr, res->ai_addrlen) == 0)
 			break;			/* success */
 
-		Close(sockfd);		/* bind error, close and try next one */
+		Close(sockfd);		/* bind error - close and try next one */
 	} while ( (res = res->ai_next) != NULL);
 
 	if (res == NULL)	/* errno from final socket() or bind() */

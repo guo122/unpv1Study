@@ -2,7 +2,7 @@
 
 #define	NLOOP 5000
 
-int				counter;		/* this is incremented by the threads */
+int				counter;		/* incremented by threads */
 pthread_mutex_t	counter_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void	*doit(void *);

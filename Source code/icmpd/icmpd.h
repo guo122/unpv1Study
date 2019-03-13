@@ -10,8 +10,7 @@ struct client {
 					/* 4globals */
 int				fd4, fd6, listenfd, maxi, maxfd, nready;
 fd_set			rset, allset;
-socklen_t		addrlen;
-struct sockaddr	*cliaddr;
+struct sockaddr_un	cliaddr;
 
 			/* 4function prototypes */
 int		 readable_conn(int);

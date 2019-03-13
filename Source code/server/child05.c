@@ -43,7 +43,7 @@ child_main(int i, int listenfd, int addrlen)
 		if (connfd < 0)
 			err_quit("no descriptor from read_fd");
 
-		web_child(connfd);				/* process the request */
+		web_child(connfd);				/* process request */
 		Close(connfd);
 
 		Write(STDERR_FILENO, "", 1);	/* tell parent we're ready again */

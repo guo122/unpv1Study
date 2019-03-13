@@ -12,6 +12,7 @@ send_v6()
 	icmp6->icmp6_code = 0;
 	icmp6->icmp6_id = pid;
 	icmp6->icmp6_seq = nsent++;
+	memset((icmp6 + 1), 0xa5, datalen);	/* fill with pattern */
 	Gettimeofday((struct timeval *) (icmp6 + 1), NULL);
 
 	len = 8 + datalen;		/* 8-byte ICMPv6 header */

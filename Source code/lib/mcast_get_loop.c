@@ -29,7 +29,7 @@ mcast_get_loop(int sockfd)
 #endif
 
 	default:
-		errno = EPROTONOSUPPORT;
+		errno = EAFNOSUPPORT;
 		return(-1);
 	}
 }

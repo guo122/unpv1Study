@@ -6,7 +6,7 @@
 int
 main(int argc, char **argv)
 {
-	int		mib[5], val;
+	int		mib[4], val;
 	size_t	len;
 
 	mib[0] = CTL_NET;

@@ -5,7 +5,7 @@
 unsigned int
 if_nametoindex(const char *name)
 {
-	unsigned int		index;
+	unsigned int		idx, namelen;
 	char				*buf, *next, *lim;
 	size_t				len;
 	struct if_msghdr	*ifm;
@@ -15,6 +15,7 @@ if_nametoindex(const char *name)
 	if ( (buf = net_rt_iflist(0, 0, &len)) == NULL)
 		return(0);
 
+	namelen = strlen(name);
 	lim = buf + len;
 	for (next = buf; next < lim; next += ifm->ifm_msglen) {
 		ifm = (struct if_msghdr *) next;
@@ -24,10 +25,10 @@ if_nametoindex(const char *name)
 			if ( (sa = rti_info[RTAX_IFP]) != NULL) {
 				if (sa->sa_family == AF_LINK) {
 					sdl = (struct sockaddr_dl *) sa;
-					if (strncmp(&sdl->sdl_data[0], name, sdl->sdl_nlen) == 0) {
-						index = sdl->sdl_index;	/* save before free() */
+					if (sdl->sdl_nlen == namelen && strncmp(&sdl->sdl_data[0], name, sdl->sdl_nlen) == 0) {
+						idx = sdl->sdl_index;	/* save before free() */
 						free(buf);
-						return(index);
+						return(idx);
 					}
 				}
 			}
@@ -42,9 +43,9 @@ if_nametoindex(const char *name)
 unsigned int
 If_nametoindex(const char *name)
 {
-	int		index;
+	int		idx;
 
-	if ( (index = if_nametoindex(name)) == 0)
+	if ( (idx = if_nametoindex(name)) == 0)
 		err_quit("if_nametoindex error for %s", name);
-	return(index);
+	return(idx);
 }

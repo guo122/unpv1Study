@@ -1,14 +1,14 @@
 #include	"unp.h"
 
 #ifdef	HAVE_SOCKADDR_DL_STRUCT
-# include	<net/if_dl.h>
+#include	<net/if_dl.h>
 #endif
 
 /* include sock_ntop */
 char *
 sock_ntop(const struct sockaddr *sa, socklen_t salen)
 {
-    char		portstr[7];
+    char		portstr[8];
     static char str[128];		/* Unix domain is largest */
 
 	switch (sa->sa_family) {
@@ -18,7 +18,7 @@ sock_ntop(const struct sockaddr *sa, socklen_t salen)
 		if (inet_ntop(AF_INET, &sin->sin_addr, str, sizeof(str)) == NULL)
 			return(NULL);
 		if (ntohs(sin->sin_port) != 0) {
-			snprintf(portstr, sizeof(portstr), ".%d", ntohs(sin->sin_port));
+			snprintf(portstr, sizeof(portstr), ":%d", ntohs(sin->sin_port));
 			strcat(str, portstr);
 		}
 		return(str);
@@ -29,13 +29,15 @@ sock_ntop(const struct sockaddr *sa, socklen_t salen)
 	case AF_INET6: {
 		struct sockaddr_in6	*sin6 = (struct sockaddr_in6 *) sa;
 
-		if (inet_ntop(AF_INET6, &sin6->sin6_addr, str, sizeof(str)) == NULL)
+		str[0] = '[';
+		if (inet_ntop(AF_INET6, &sin6->sin6_addr, str + 1, sizeof(str) - 1) == NULL)
 			return(NULL);
 		if (ntohs(sin6->sin6_port) != 0) {
-			snprintf(portstr, sizeof(portstr), ".%d", ntohs(sin6->sin6_port));
+			snprintf(portstr, sizeof(portstr), "]:%d", ntohs(sin6->sin6_port));
 			strcat(str, portstr);
+			return(str);
 		}
-		return(str);
+		return (str + 1);
 	}
 #endif
 
@@ -58,8 +60,8 @@ sock_ntop(const struct sockaddr *sa, socklen_t salen)
 		struct sockaddr_dl	*sdl = (struct sockaddr_dl *) sa;
 
 		if (sdl->sdl_nlen > 0)
-			snprintf(str, sizeof(str), "%*s",
-					 sdl->sdl_nlen, &sdl->sdl_data[0]);
+			snprintf(str, sizeof(str), "%*s (index %d)",
+					 sdl->sdl_nlen, &sdl->sdl_data[0], sdl->sdl_index);
 		else
 			snprintf(str, sizeof(str), "AF_LINK, index=%d", sdl->sdl_index);
 		return(str);

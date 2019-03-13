@@ -11,19 +11,19 @@ mcast_get_if(int sockfd)
 
 #ifdef	IPV6
 	case AF_INET6: {
-		u_int		index;
+		u_int		idx;
 		socklen_t	len;
 
-		len = sizeof(index);
+		len = sizeof(idx);
 		if (getsockopt(sockfd, IPPROTO_IPV6, IPV6_MULTICAST_IF,
-					   &index, &len) < 0)
+					   &idx, &len) < 0)
 			return(-1);
-		return(index);
+		return(idx);
 	}
 #endif
 
 	default:
-		errno = EPROTONOSUPPORT;
+		errno = EAFNOSUPPORT;
 		return(-1);
 	}
 }

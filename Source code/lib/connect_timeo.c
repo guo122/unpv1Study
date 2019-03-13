@@ -13,7 +13,7 @@ connect_timeo(int sockfd, const SA *saptr, socklen_t salen, int nsec)
 	if (alarm(nsec) != 0)
 		err_msg("connect_timeo: alarm was already set");
 
-	if ( (n = connect(sockfd, (struct sockaddr *) saptr, salen)) < 0) {
+	if ( (n = connect(sockfd, saptr, salen)) < 0) {
 		close(sockfd);
 		if (errno == EINTR)
 			errno = ETIMEDOUT;

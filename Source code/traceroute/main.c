@@ -18,6 +18,7 @@ main(int argc, char **argv)
 {
 	int				c;
 	struct addrinfo	*ai;
+	char *h;
 
 	opterr = 0;		/* don't want getopt() writing to stderr */
 	while ( (c = getopt(argc, argv, "m:v")) != -1) {
@@ -45,10 +46,10 @@ main(int argc, char **argv)
 
 	ai = Host_serv(host, NULL, 0, 0);
 
+	h = Sock_ntop_host(ai->ai_addr, ai->ai_addrlen);
 	printf("traceroute to %s (%s): %d hops max, %d data bytes\n",
-		   ai->ai_canonname,
-		   Sock_ntop_host(ai->ai_addr, ai->ai_addrlen),
-		   max_ttl, datalen);
+		   ai->ai_canonname ? ai->ai_canonname : h,
+		   h, max_ttl, datalen);
 
 		/* initialize according to protocol */
 	if (ai->ai_family == AF_INET) {
@@ -57,7 +58,7 @@ main(int argc, char **argv)
 	} else if (ai->ai_family == AF_INET6) {
 		pr = &proto_v6;
 		if (IN6_IS_ADDR_V4MAPPED(&(((struct sockaddr_in6 *)ai->ai_addr)->sin6_addr)))
-			err_quit("cannot ping IPv4-mapped IPv6 address");
+			err_quit("cannot traceroute IPv4-mapped IPv6 address");
 #endif
 	} else
 		err_quit("unknown address family %d", ai->ai_family);

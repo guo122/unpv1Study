@@ -28,7 +28,7 @@ thread_main(void *arg)
 		Pthread_mutex_unlock(&mlock);
 		tptr[(int) arg].thread_count++;
 
-		web_child(connfd);		/* process the request */
+		web_child(connfd);		/* process request */
 		Close(connfd);
 	}
 }

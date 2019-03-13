@@ -46,7 +46,7 @@ again:
 ssize_t
 readline(int fd, void *vptr, size_t maxlen)
 {
-	int		n, rc;
+	size_t		n, rc;
 	char	c, *ptr;
 	Rline	*tsd;
 
@@ -63,10 +63,8 @@ readline(int fd, void *vptr, size_t maxlen)
 			if (c == '\n')
 				break;
 		} else if (rc == 0) {
-			if (n == 1)
-				return(0);	/* EOF, no data read */
-			else
-				break;		/* EOF, some data was read */
+			*ptr = 0;
+			return(n - 1);		/* EOF, n - 1 bytes read */
 		} else
 			return(-1);		/* error, errno set by read() */
 	}

@@ -31,5 +31,5 @@ copyto(void *arg)
 	Shutdown(sockfd, SHUT_WR);	/* EOF on stdin, send FIN */
 
 	return(NULL);
-		/* 4return (i.e., thread terminates) when end-of-file on stdin */
+		/* 4return (i.e., thread terminates) when EOF on stdin */
 }
