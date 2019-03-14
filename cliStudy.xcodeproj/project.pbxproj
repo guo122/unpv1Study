@@ -16,6 +16,7 @@
 		528C8D0F22393D4700934B7A /* wrapstdio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528C8D0E22393D4700934B7A /* wrapstdio.cpp */; };
 		528C8D112239EE2900934B7A /* readn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528C8D102239EE2900934B7A /* readn.cpp */; };
 		528C8D132239EE4200934B7A /* readline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528C8D122239EE4200934B7A /* readline.cpp */; };
+		528C8D1D2239F5C400934B7A /* signal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528C8D1C2239F5C400934B7A /* signal.cpp */; };
 		52AF61892238D48500B22ADD /* error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52AF61882238D48500B22ADD /* error.cpp */; };
 		52AF618C2238D48F00B22ADD /* intro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52AF618A2238D48F00B22ADD /* intro.cpp */; };
 		52AF61952238D61900B22ADD /* wrapsock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52AF61942238D61900B22ADD /* wrapsock.cpp */; };
@@ -46,6 +47,7 @@
 		528C8D0E22393D4700934B7A /* wrapstdio.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = wrapstdio.cpp; path = lib/wrapstdio.cpp; sourceTree = SOURCE_ROOT; };
 		528C8D102239EE2900934B7A /* readn.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = readn.cpp; path = lib/readn.cpp; sourceTree = SOURCE_ROOT; };
 		528C8D122239EE4200934B7A /* readline.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = readline.cpp; path = lib/readline.cpp; sourceTree = SOURCE_ROOT; };
+		528C8D1C2239F5C400934B7A /* signal.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = signal.cpp; path = lib/signal.cpp; sourceTree = SOURCE_ROOT; };
 		52AF61872238D48500B22ADD /* lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lib.h; path = lib/lib.h; sourceTree = SOURCE_ROOT; };
 		52AF61882238D48500B22ADD /* error.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = error.cpp; path = lib/error.cpp; sourceTree = SOURCE_ROOT; };
 		52AF618A2238D48F00B22ADD /* intro.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = intro.cpp; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				528C8D0E22393D4700934B7A /* wrapstdio.cpp */,
 				528C8D102239EE2900934B7A /* readn.cpp */,
 				528C8D122239EE4200934B7A /* readline.cpp */,
+				528C8D1C2239F5C400934B7A /* signal.cpp */,
 			);
 			name = lib;
 			path = "New Group";
@@ -176,6 +179,7 @@
 				528C8D032239368800934B7A /* str_echo.cpp in Sources */,
 				52AF618C2238D48F00B22ADD /* intro.cpp in Sources */,
 				528C8D132239EE4200934B7A /* readline.cpp in Sources */,
+				528C8D1D2239F5C400934B7A /* signal.cpp in Sources */,
 				52AF619B2238DA1A00B22ADD /* wrapunix.cpp in Sources */,
 				528C8D072239373E00934B7A /* tcpcliserv.cpp in Sources */,
 				52AF61952238D61900B22ADD /* wrapsock.cpp in Sources */,

@@ -15,7 +15,7 @@
 #include    <arpa/inet.h>    /* inet(3) functions */
 #include    <unistd.h>
 
-#include    <errno.h>
+typedef    void    Sigfunc(int);    /* for signal handlers */
 
 #define     MAXLINE 4096
 
@@ -61,5 +61,7 @@ void        Fputs(const char *, FILE *);
 char *      Fgets(char *, int, FILE *);
 
 ssize_t     Readline(int, void *, size_t);
+
+Sigfunc *   Signal(int, Sigfunc *);
 
 #endif /* unheader_h */
