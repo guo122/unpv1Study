@@ -5,7 +5,6 @@
 //  Copyright © 2019 John. All rights reserved.
 //
 
-#include    <iostream>
 #include    <syslog.h>        /* for syslog() */
 
 #include    "lib.h"

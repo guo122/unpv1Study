@@ -6,8 +6,6 @@
 //  Copyright © 2019 John. All rights reserved.
 //
 
-#include    <iostream>
-
 #include    "../lib/lib.h"
 
 void
