@@ -61,6 +61,7 @@ void        Fputs(const char *, FILE *);
 char *      Fgets(char *, int, FILE *);
 
 ssize_t     Readline(int, void *, size_t);
+ssize_t     Readn(int, void *, size_t);
 
 Sigfunc *   Signal(int, Sigfunc *);
 

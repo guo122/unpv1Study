@@ -9,9 +9,17 @@
 #include "header.h"
 
 int main(int argc, const char * argv[]) {
+
+    const char * addr = "127.0.0.1";
     
-//    daytimetcpcli("127.0.0.1");
-    tcpcli01("127.0.0.1");
+    if (argc == 2) {
+        addr = argv[1];
+    }
+    
+//    daytimetcpcli(addr);
+//    tcpcli01(addr);
+//    tcpcli04(addr);
+    tcpcli09(addr);
     
     return 0;
 }

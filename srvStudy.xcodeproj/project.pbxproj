@@ -36,7 +36,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		527A10802238D44400E73607 /* serStudy */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = serStudy; sourceTree = BUILT_PRODUCTS_DIR; };
+		527A10802238D44400E73607 /* srvStudy */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = srvStudy; sourceTree = BUILT_PRODUCTS_DIR; };
 		527A10832238D44400E73607 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		528C8CF722392E2C00934B7A /* tcpcliserv.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tcpcliserv.cpp; sourceTree = "<group>"; };
 		528C8CFC2239327A00934B7A /* str_echo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = str_echo.cpp; path = lib/str_echo.cpp; sourceTree = "<group>"; };
@@ -78,7 +78,7 @@
 		527A10812238D44400E73607 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				527A10802238D44400E73607 /* serStudy */,
+				527A10802238D44400E73607 /* srvStudy */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -116,9 +116,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		527A107F2238D44400E73607 /* serStudy */ = {
+		527A107F2238D44400E73607 /* srvStudy */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 527A10872238D44400E73607 /* Build configuration list for PBXNativeTarget "serStudy" */;
+			buildConfigurationList = 527A10872238D44400E73607 /* Build configuration list for PBXNativeTarget "srvStudy" */;
 			buildPhases = (
 				527A107C2238D44400E73607 /* Sources */,
 				527A107D2238D44400E73607 /* Frameworks */,
@@ -128,9 +128,9 @@
 			);
 			dependencies = (
 			);
-			name = serStudy;
-			productName = serStudy;
-			productReference = 527A10802238D44400E73607 /* serStudy */;
+			name = srvStudy;
+			productName = srvStudy;
+			productReference = 527A10802238D44400E73607 /* srvStudy */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -159,7 +159,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				527A107F2238D44400E73607 /* serStudy */,
+				527A107F2238D44400E73607 /* srvStudy */,
 			);
 		};
 /* End PBXProject section */
@@ -328,7 +328,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		527A10872238D44400E73607 /* Build configuration list for PBXNativeTarget "serStudy" */ = {
+		527A10872238D44400E73607 /* Build configuration list for PBXNativeTarget "srvStudy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				527A10882238D44400E73607 /* Debug */,

@@ -15,5 +15,8 @@ void daytimetcpsrv1();
 void tcpserv01();
 void tcpserv02();
 void tcpserv03();
+void tcpserv04();
+void tcpserv08();
+void tcpserv09();
 
 #endif /* headerFunc_h */

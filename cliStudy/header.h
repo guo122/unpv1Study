@@ -12,5 +12,7 @@
 void daytimetcpcli(const char * addr_);
 
 void tcpcli01(const char *);
+void tcpcli04(const char *);
+void tcpcli09(const char *);
 
 #endif /* headerFunc_h */
