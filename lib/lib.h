@@ -40,6 +40,14 @@ typedef    void    Sigfunc(int);    /* for signal handlers */
 #define    min(a,b)    ((a) < (b) ? (a) : (b))
 #define    max(a,b)    ((a) > (b) ? (a) : (b))
 
+#ifndef INFTIM
+#define INFTIM          (-1)    /* infinite poll timeout */
+/* $$.Ic INFTIM$$ */
+#ifdef    HAVE_POLL_H
+#define    INFTIM_UNPH                /* tell unpxti.h we defined it */
+#endif
+#endif
+
 #define     PRINT_FUNC \
 Fputs("--[", stdout);\
 Fputs(__func__, stdout);\
@@ -53,6 +61,7 @@ int         Accept(int, struct sockaddr *, socklen_t *);
 int         Select(int, fd_set *, fd_set *, fd_set *,
                    struct timeval *);
 void        Shutdown(int, int);
+int         Poll(struct pollfd *, unsigned long, int);
 
 void        Write(int, void *, size_t);
 ssize_t     Read(int, void *, size_t);

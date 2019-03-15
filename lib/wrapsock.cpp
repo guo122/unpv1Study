@@ -5,6 +5,8 @@
 //  Copyright © 2019 John. All rights reserved.
 //
 
+#include    <poll.h>
+
 #include    "lib.h"
 
 /* include Socket */
@@ -83,4 +85,15 @@ Shutdown(int fd, int how)
 {
     if (shutdown(fd, how) < 0)
         err_sys("shutdown error");
+}
+
+int
+Poll(struct pollfd *fdarray, unsigned long nfds, int timeout)
+{
+    int        n;
+    
+    if ( (n = poll(fdarray, nfds, timeout)) < 0)
+        err_sys("poll error");
+    
+    return(n);
 }
