@@ -15,4 +15,7 @@ void tcpcli01(const char *);
 void tcpcli04(const char *);
 void tcpcli09(const char *);
 
+void tcpcliselect01(const char *);
+void tcpcliselect02(const char *);
+
 #endif /* headerFunc_h */

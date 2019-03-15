@@ -10,6 +10,7 @@
 
 void
 daytimetcpsrv() {
+    PRINT_FUNC
     
     int listenfd, connfd;
     struct sockaddr_in servaddr;
@@ -41,6 +42,7 @@ daytimetcpsrv() {
 
 void
 daytimetcpsrv1() {
+    PRINT_FUNC
     
     int listenfd, connfd;
     socklen_t len;

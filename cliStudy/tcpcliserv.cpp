@@ -65,6 +65,8 @@ str_cli09(FILE *fp, int sockfd)
 
 void
 tcpcli01(const char *addr_) {
+    PRINT_FUNC
+    
     int sockfd;
     struct sockaddr_in servaddr;
     
@@ -84,6 +86,8 @@ tcpcli01(const char *addr_) {
 
 void
 tcpcli04(const char *addr_) {
+    PRINT_FUNC
+    
     int i, sockfd[5];
     struct sockaddr_in servaddr;
     
@@ -105,6 +109,8 @@ tcpcli04(const char *addr_) {
 
 void
 tcpcli09(const char *addr_) {
+    PRINT_FUNC
+    
     int sockfd;
     struct sockaddr_in servaddr;
     

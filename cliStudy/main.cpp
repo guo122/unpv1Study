@@ -19,7 +19,10 @@ int main(int argc, const char * argv[]) {
 //    daytimetcpcli(addr);
 //    tcpcli01(addr);
 //    tcpcli04(addr);
-    tcpcli09(addr);
+//    tcpcli09(addr);
+    
+//    tcpcliselect01(addr);
+    tcpcliselect02(addr);
     
     return 0;
 }

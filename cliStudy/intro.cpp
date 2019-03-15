@@ -10,6 +10,7 @@
 
 void
 daytimetcpcli(const char * addr_) {
+    PRINT_FUNC
     
     int sockfd, n;
     char recvline[MAXLINE + 1];

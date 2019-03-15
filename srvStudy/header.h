@@ -19,4 +19,6 @@ void tcpserv04();
 void tcpserv08();
 void tcpserv09();
 
+void tcpservselect01();
+
 #endif /* headerFunc_h */

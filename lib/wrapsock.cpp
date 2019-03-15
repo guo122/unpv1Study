@@ -66,3 +66,21 @@ again:
     }
     return(n);
 }
+
+int
+Select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
+       struct timeval *timeout)
+{
+    int        n;
+    
+    if ( (n = select(nfds, readfds, writefds, exceptfds, timeout)) < 0)
+        err_sys("select error");
+    return(n);        /* can return 0 on timeout */
+}
+
+void
+Shutdown(int fd, int how)
+{
+    if (shutdown(fd, how) < 0)
+        err_sys("shutdown error");
+}

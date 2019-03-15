@@ -11,6 +11,8 @@
 #include    <iostream>
 #include    <stdlib.h>
 
+//#include    <sys/types.h>
+
 #include    <netinet/in.h> /* sockaddr_in{} and other Internet defns */
 #include    <arpa/inet.h>    /* inet(3) functions */
 #include    <unistd.h>
@@ -35,13 +37,25 @@ typedef    void    Sigfunc(int);    /* for signal handlers */
 /* $$.ix [UNIXSTR_PATH]~constant,~definition~of$$ */
 /* $$.ix [UNIXDG_PATH]~constant,~definition~of$$ */
 
+#define    min(a,b)    ((a) < (b) ? (a) : (b))
+#define    max(a,b)    ((a) > (b) ? (a) : (b))
+
+#define     PRINT_FUNC \
+Fputs("--[", stdout);\
+Fputs(__func__, stdout);\
+Fputs("]--\n", stdout);
+
 int         Socket(int, int, int);
 void        Bind(int, const struct sockaddr *, socklen_t);
 void        Listen(int, int);
 void        Connect(int, const struct sockaddr *, socklen_t);
 int         Accept(int, struct sockaddr *, socklen_t *);
+int         Select(int, fd_set *, fd_set *, fd_set *,
+                   struct timeval *);
+void        Shutdown(int, int);
 
 void        Write(int, void *, size_t);
+ssize_t     Read(int, void *, size_t);
 void        Close(int);
 pid_t       Fork(void);
 

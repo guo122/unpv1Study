@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		527A10712238D43300E73607 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 527A10702238D43300E73607 /* main.cpp */; };
+		52803F01223B2733004D6347 /* select.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52803F00223B2733004D6347 /* select.cpp */; };
 		528C8D032239368800934B7A /* str_echo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528C8D012239368800934B7A /* str_echo.cpp */; };
 		528C8D042239368800934B7A /* writen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528C8D022239368800934B7A /* writen.cpp */; };
 		528C8D072239373E00934B7A /* tcpcliserv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528C8D052239373E00934B7A /* tcpcliserv.cpp */; };
@@ -38,6 +39,7 @@
 /* Begin PBXFileReference section */
 		527A106D2238D43300E73607 /* cliStudy */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = cliStudy; sourceTree = BUILT_PRODUCTS_DIR; };
 		527A10702238D43300E73607 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		52803F00223B2733004D6347 /* select.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = select.cpp; sourceTree = "<group>"; };
 		528C8D012239368800934B7A /* str_echo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = str_echo.cpp; path = lib/str_echo.cpp; sourceTree = SOURCE_ROOT; };
 		528C8D022239368800934B7A /* writen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = writen.cpp; path = lib/writen.cpp; sourceTree = SOURCE_ROOT; };
 		528C8D052239373E00934B7A /* tcpcliserv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tcpcliserv.cpp; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 				528C8D052239373E00934B7A /* tcpcliserv.cpp */,
 				52AF618A2238D48F00B22ADD /* intro.cpp */,
 				527A10702238D43300E73607 /* main.cpp */,
+				52803F00223B2733004D6347 /* select.cpp */,
 			);
 			path = cliStudy;
 			sourceTree = "<group>";
@@ -179,6 +182,7 @@
 				528C8D032239368800934B7A /* str_echo.cpp in Sources */,
 				52AF618C2238D48F00B22ADD /* intro.cpp in Sources */,
 				528C8D132239EE4200934B7A /* readline.cpp in Sources */,
+				52803F01223B2733004D6347 /* select.cpp in Sources */,
 				528C8D1D2239F5C400934B7A /* signal.cpp in Sources */,
 				52AF619B2238DA1A00B22ADD /* wrapunix.cpp in Sources */,
 				528C8D072239373E00934B7A /* tcpcliserv.cpp in Sources */,
