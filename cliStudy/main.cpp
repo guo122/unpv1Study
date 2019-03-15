@@ -22,7 +22,9 @@ int main(int argc, const char * argv[]) {
 //    tcpcli09(addr);
     
 //    tcpcliselect01(addr);
-    tcpcliselect02(addr);
+//    tcpcliselect02(addr);
+    
+    checkopts();
     
     return 0;
 }

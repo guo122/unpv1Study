@@ -68,6 +68,7 @@ ssize_t     Read(int, void *, size_t);
 void        Close(int);
 pid_t       Fork(void);
 
+void        err_ret(const char *, ...);
 void        err_quit(const char *, ...);
 void        err_sys(const char *, ...);
 
