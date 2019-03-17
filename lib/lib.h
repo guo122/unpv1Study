@@ -62,11 +62,16 @@ int         Select(int, fd_set *, fd_set *, fd_set *,
                    struct timeval *);
 void        Shutdown(int, int);
 int         Poll(struct pollfd *, unsigned long, int);
+ssize_t     Recv(int, void *, size_t, int);
+ssize_t     Recvfrom(int, void *, size_t, int, struct sockaddr *, socklen_t *);
+void        Send(int, const void *, size_t, int);
+void        Sendto(int, const void *, size_t, int, const struct sockaddr *, socklen_t);
 
 void        Write(int, void *, size_t);
 ssize_t     Read(int, void *, size_t);
 void        Close(int);
 pid_t       Fork(void);
+void *      Malloc(size_t);
 
 void        err_ret(const char *, ...);
 void        err_quit(const char *, ...);
@@ -74,6 +79,9 @@ void        err_sys(const char *, ...);
 
 void        str_echo(int sockfd);
 void        str_cli(FILE *, int);
+
+void        dg_cli(FILE *, int, const struct sockaddr *, socklen_t);
+void        dg_echo (int, struct sockaddr *, socklen_t);
 
 ssize_t     writen(int, const void *, size_t);
 void        Writen(int, void *, size_t);
@@ -88,5 +96,7 @@ ssize_t     Readline(int, void *, size_t);
 ssize_t     Readn(int, void *, size_t);
 
 Sigfunc *   Signal(int, Sigfunc *);
+
+char *      Sock_ntop(const struct sockaddr *, socklen_t);
 
 #endif /* unheader_h */

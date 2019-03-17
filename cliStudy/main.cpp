@@ -24,7 +24,10 @@ int main(int argc, const char * argv[]) {
 //    tcpcliselect01(addr);
 //    tcpcliselect02(addr);
     
-    checkopts();
+//    checkopts();
+    
+//    udpcli01(addr);
+    udpcliaddr(addr);
     
     return 0;
 }

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		52366B1B223C7C0900D3B65D /* udpcliserv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52366B1A223C7C0900D3B65D /* udpcliserv.cpp */; };
+		52366B1F223C7CE900D3B65D /* dg_echo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52366B1E223C7CE900D3B65D /* dg_echo.cpp */; };
+		52366B21223C7D0300D3B65D /* dg_cli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52366B20223C7D0300D3B65D /* dg_cli.cpp */; };
 		527A10842238D44400E73607 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 527A10832238D44400E73607 /* main.cpp */; };
 		528C8CF922392E2C00934B7A /* tcpcliserv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528C8CF722392E2C00934B7A /* tcpcliserv.cpp */; };
 		528C8CFD2239327A00934B7A /* str_echo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528C8CFC2239327A00934B7A /* str_echo.cpp */; };
@@ -17,6 +20,7 @@
 		528C8D1A2239EF3500934B7A /* readn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528C8D162239EF3500934B7A /* readn.cpp */; };
 		528C8D1B2239EF3500934B7A /* str_cli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528C8D172239EF3500934B7A /* str_cli.cpp */; };
 		528C8D1F2239F5EA00934B7A /* signal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528C8D1E2239F5EA00934B7A /* signal.cpp */; };
+		528E0B20223C83230099BAB8 /* sock_ntop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528E0B1F223C83230099BAB8 /* sock_ntop.cpp */; };
 		52AF61902238D50900B22ADD /* error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52AF618F2238D50900B22ADD /* error.cpp */; };
 		52AF61932238D51500B22ADD /* intro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52AF61922238D51500B22ADD /* intro.cpp */; };
 		52AF61972238D66D00B22ADD /* wrapsock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52AF61962238D66D00B22ADD /* wrapsock.cpp */; };
@@ -36,6 +40,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		52366B1A223C7C0900D3B65D /* udpcliserv.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = udpcliserv.cpp; sourceTree = "<group>"; };
+		52366B1E223C7CE900D3B65D /* dg_echo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = dg_echo.cpp; path = lib/dg_echo.cpp; sourceTree = "<group>"; };
+		52366B20223C7D0300D3B65D /* dg_cli.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = dg_cli.cpp; path = lib/dg_cli.cpp; sourceTree = "<group>"; };
 		527A10802238D44400E73607 /* srvStudy */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = srvStudy; sourceTree = BUILT_PRODUCTS_DIR; };
 		527A10832238D44400E73607 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		528C8CF722392E2C00934B7A /* tcpcliserv.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tcpcliserv.cpp; sourceTree = "<group>"; };
@@ -47,6 +54,7 @@
 		528C8D162239EF3500934B7A /* readn.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = readn.cpp; path = lib/readn.cpp; sourceTree = "<group>"; };
 		528C8D172239EF3500934B7A /* str_cli.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = str_cli.cpp; path = lib/str_cli.cpp; sourceTree = "<group>"; };
 		528C8D1E2239F5EA00934B7A /* signal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = signal.cpp; path = lib/signal.cpp; sourceTree = "<group>"; };
+		528E0B1F223C83230099BAB8 /* sock_ntop.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = sock_ntop.cpp; path = lib/sock_ntop.cpp; sourceTree = "<group>"; };
 		52AF618E2238D50900B22ADD /* lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lib.h; path = lib/lib.h; sourceTree = "<group>"; };
 		52AF618F2238D50900B22ADD /* error.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = error.cpp; path = lib/error.cpp; sourceTree = "<group>"; };
 		52AF61912238D51500B22ADD /* header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = header.h; sourceTree = "<group>"; };
@@ -90,6 +98,7 @@
 				52AF61912238D51500B22ADD /* header.h */,
 				527A10832238D44400E73607 /* main.cpp */,
 				528C8CF722392E2C00934B7A /* tcpcliserv.cpp */,
+				52366B1A223C7C0900D3B65D /* udpcliserv.cpp */,
 			);
 			path = srvStudy;
 			sourceTree = "<group>";
@@ -109,6 +118,9 @@
 				52AF61982238D9B400B22ADD /* wrapunix.cpp */,
 				528C8CFE223932E600934B7A /* writen.cpp */,
 				528C8D0822393B8200934B7A /* wraplib.cpp */,
+				52366B1E223C7CE900D3B65D /* dg_echo.cpp */,
+				52366B20223C7D0300D3B65D /* dg_cli.cpp */,
+				528E0B1F223C83230099BAB8 /* sock_ntop.cpp */,
 			);
 			name = lib;
 			sourceTree = "<group>";
@@ -170,11 +182,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				52AF61902238D50900B22ADD /* error.cpp in Sources */,
+				52366B1B223C7C0900D3B65D /* udpcliserv.cpp in Sources */,
 				527A10842238D44400E73607 /* main.cpp in Sources */,
 				52AF61932238D51500B22ADD /* intro.cpp in Sources */,
 				528C8CFD2239327A00934B7A /* str_echo.cpp in Sources */,
+				52366B1F223C7CE900D3B65D /* dg_echo.cpp in Sources */,
 				528C8D1A2239EF3500934B7A /* readn.cpp in Sources */,
 				528C8D192239EF3500934B7A /* readline.cpp in Sources */,
+				528E0B20223C83230099BAB8 /* sock_ntop.cpp in Sources */,
 				528C8D00223932E600934B7A /* writen.cpp in Sources */,
 				528C8D182239EF3500934B7A /* wrapstdio.cpp in Sources */,
 				52AF61992238D9B400B22ADD /* wrapunix.cpp in Sources */,
@@ -183,6 +198,7 @@
 				528C8D1B2239EF3500934B7A /* str_cli.cpp in Sources */,
 				52AF61972238D66D00B22ADD /* wrapsock.cpp in Sources */,
 				528C8D0922393B8200934B7A /* wraplib.cpp in Sources */,
+				52366B21223C7D0300D3B65D /* dg_cli.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

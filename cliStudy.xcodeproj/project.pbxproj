@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		52366B19223C7BED00D3B65D /* udpcliserv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52366B18223C7BED00D3B65D /* udpcliserv.cpp */; };
+		52366B24223C7D1F00D3B65D /* dg_echo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52366B22223C7D1E00D3B65D /* dg_echo.cpp */; };
+		52366B25223C7D1F00D3B65D /* dg_cli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52366B23223C7D1E00D3B65D /* dg_cli.cpp */; };
 		527A10712238D43300E73607 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 527A10702238D43300E73607 /* main.cpp */; };
 		52803F01223B2733004D6347 /* select.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52803F00223B2733004D6347 /* select.cpp */; };
 		528C8D032239368800934B7A /* str_echo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528C8D012239368800934B7A /* str_echo.cpp */; };
@@ -18,6 +21,7 @@
 		528C8D112239EE2900934B7A /* readn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528C8D102239EE2900934B7A /* readn.cpp */; };
 		528C8D132239EE4200934B7A /* readline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528C8D122239EE4200934B7A /* readline.cpp */; };
 		528C8D1D2239F5C400934B7A /* signal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528C8D1C2239F5C400934B7A /* signal.cpp */; };
+		528E0B22223C83A10099BAB8 /* sock_ntop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 528E0B21223C83A10099BAB8 /* sock_ntop.cpp */; };
 		5292189E223B8C41001F3659 /* sockopt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5292189D223B8C41001F3659 /* sockopt.cpp */; };
 		52AF61892238D48500B22ADD /* error.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52AF61882238D48500B22ADD /* error.cpp */; };
 		52AF618C2238D48F00B22ADD /* intro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 52AF618A2238D48F00B22ADD /* intro.cpp */; };
@@ -38,6 +42,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		52366B18223C7BED00D3B65D /* udpcliserv.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = udpcliserv.cpp; sourceTree = "<group>"; };
+		52366B22223C7D1E00D3B65D /* dg_echo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dg_echo.cpp; path = lib/dg_echo.cpp; sourceTree = SOURCE_ROOT; };
+		52366B23223C7D1E00D3B65D /* dg_cli.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dg_cli.cpp; path = lib/dg_cli.cpp; sourceTree = SOURCE_ROOT; };
 		527A106D2238D43300E73607 /* cliStudy */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = cliStudy; sourceTree = BUILT_PRODUCTS_DIR; };
 		527A10702238D43300E73607 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		52803F00223B2733004D6347 /* select.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = select.cpp; sourceTree = "<group>"; };
@@ -51,6 +58,7 @@
 		528C8D102239EE2900934B7A /* readn.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = readn.cpp; path = lib/readn.cpp; sourceTree = SOURCE_ROOT; };
 		528C8D122239EE4200934B7A /* readline.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = readline.cpp; path = lib/readline.cpp; sourceTree = SOURCE_ROOT; };
 		528C8D1C2239F5C400934B7A /* signal.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = signal.cpp; path = lib/signal.cpp; sourceTree = SOURCE_ROOT; };
+		528E0B21223C83A10099BAB8 /* sock_ntop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sock_ntop.cpp; path = lib/sock_ntop.cpp; sourceTree = SOURCE_ROOT; };
 		5292189D223B8C41001F3659 /* sockopt.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sockopt.cpp; sourceTree = "<group>"; };
 		52AF61872238D48500B22ADD /* lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lib.h; path = lib/lib.h; sourceTree = SOURCE_ROOT; };
 		52AF61882238D48500B22ADD /* error.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = error.cpp; path = lib/error.cpp; sourceTree = SOURCE_ROOT; };
@@ -96,6 +104,7 @@
 				527A10702238D43300E73607 /* main.cpp */,
 				52803F00223B2733004D6347 /* select.cpp */,
 				5292189D223B8C41001F3659 /* sockopt.cpp */,
+				52366B18223C7BED00D3B65D /* udpcliserv.cpp */,
 			);
 			path = cliStudy;
 			sourceTree = "<group>";
@@ -103,6 +112,9 @@
 		52AF61862238D47500B22ADD /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				528E0B21223C83A10099BAB8 /* sock_ntop.cpp */,
+				52366B23223C7D1E00D3B65D /* dg_cli.cpp */,
+				52366B22223C7D1E00D3B65D /* dg_echo.cpp */,
 				528C8D0A22393C3900934B7A /* wraplib.cpp */,
 				528C8D012239368800934B7A /* str_echo.cpp */,
 				528C8D022239368800934B7A /* writen.cpp */,
@@ -178,9 +190,11 @@
 			files = (
 				528C8D0F22393D4700934B7A /* wrapstdio.cpp in Sources */,
 				528C8D0D22393CF400934B7A /* str_cli.cpp in Sources */,
+				52366B25223C7D1F00D3B65D /* dg_cli.cpp in Sources */,
 				52AF61892238D48500B22ADD /* error.cpp in Sources */,
 				527A10712238D43300E73607 /* main.cpp in Sources */,
 				528C8D112239EE2900934B7A /* readn.cpp in Sources */,
+				52366B24223C7D1F00D3B65D /* dg_echo.cpp in Sources */,
 				528C8D042239368800934B7A /* writen.cpp in Sources */,
 				528C8D032239368800934B7A /* str_echo.cpp in Sources */,
 				52AF618C2238D48F00B22ADD /* intro.cpp in Sources */,
@@ -188,10 +202,12 @@
 				52803F01223B2733004D6347 /* select.cpp in Sources */,
 				528C8D1D2239F5C400934B7A /* signal.cpp in Sources */,
 				52AF619B2238DA1A00B22ADD /* wrapunix.cpp in Sources */,
+				528E0B22223C83A10099BAB8 /* sock_ntop.cpp in Sources */,
 				528C8D072239373E00934B7A /* tcpcliserv.cpp in Sources */,
 				52AF61952238D61900B22ADD /* wrapsock.cpp in Sources */,
 				528C8D0B22393C3900934B7A /* wraplib.cpp in Sources */,
 				5292189E223B8C41001F3659 /* sockopt.cpp in Sources */,
+				52366B19223C7BED00D3B65D /* udpcliserv.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

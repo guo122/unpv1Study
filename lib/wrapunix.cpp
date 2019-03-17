@@ -40,3 +40,13 @@ Fork(void)
         err_sys("fork error");
     return(pid);
 }
+
+void *
+Malloc(size_t size)
+{
+    void    *ptr;
+    
+    if ( (ptr = malloc(size)) == NULL)
+        err_sys("malloc error");
+    return(ptr);
+}
